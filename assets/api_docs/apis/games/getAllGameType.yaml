@@ -1,0 +1,53 @@
+{
+  "get": {
+    "summary": "Get all game type data",
+    "tags": [
+      "Games"
+    ],
+    "requestBody": {
+    },
+    "responses": {
+      "200": {
+        "description": "Successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {"type":"string", "example": "false"},
+                "responseTimestamp": {"type":"string", "example": "2023-08-25T08:36:11.463Z"},
+                "statusCode": {"type": "integer", "example": "200"},
+                "data": {
+                  "type": "array", 
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {"type": "string"},
+                      "type": {"type": "integer"}
+                    }
+                  },
+                  "example": [
+                    {"name": "Action",
+                    "type": "1"},
+                    {"name": "Multiplayers",
+                    "type": "2"}
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        $ref: "../../responses/401.yaml"
+      },
+      "404": {
+        $ref: "../../responses/404.yaml"
+      },
+      "500": {
+        $ref: "../../responses/500.yaml"
+      }
+    }
+  }
+    
+}

@@ -1,0 +1,52 @@
+{
+  "post": {
+    "summary": "Claim quest",
+    "tags": [
+      "Quest"
+    ],
+    "requestBody": {
+      "description": "Request body when user claim quest",
+      "required": "true",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "userId": {"type":"string", "example": "w_3b54991037d4ad538cf69947551fab45"}
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {"type":"string", "example": "false"},
+                "responseTimestamp": {"type":"string", "example": "2024-01-19T08:29:03.872Z"},
+                "statusCode": {"type": "integer", "example": "200"},
+                "data": {"type":"object","properties":{
+                  "msg": {"type":"string", "example": "Claim Success"}
+                }}
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        $ref: "../../responses/401.yaml"
+      },
+      "404": {
+        $ref: "../../responses/404.yaml"
+      },
+      "500": {
+        $ref: "../../responses/500.yaml"
+      }
+    }
+  }
+    
+}

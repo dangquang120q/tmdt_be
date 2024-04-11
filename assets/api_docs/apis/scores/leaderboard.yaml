@@ -1,0 +1,188 @@
+{
+  "post": {
+    "summary": "Get top 20 leaderboard",
+    "tags": [
+      "Scores"
+    ],
+    "requestBody": {
+      "description": "Request body when get top 20 leaderboard",
+      "required": "true",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "type": { "type": "interger", "example": 0 },
+              "userId": {"type":"string", "example": "w_a1496914dd2b84123456056dd3eae97e"}
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {"type":"string", "example": "false"},
+                "responseTimestamp": {"type":"string", "example": "2024-01-19T08:29:03.872Z"},
+                "statusCode": {"type": "integer", "example": "200"},
+                "data": {
+                  "type":"object",
+                  "properties":{
+                    "leaderboard": {
+                      "type":"array", 
+                      "items": {
+                        "type": "object",
+                        "properties":{
+                          "userId": {"type":"string", "example": "w_79673ab88f8f4af8dac95a17dfa1ebd3"},
+                          "name_unq": {"type":"string", "example": "efi_man"},
+                          "coinBalance": {"type":"integer", "example": 2844520}
+                        }
+                      },
+                      "example": [
+                        {
+                            "userId": "w_79673ab88f8f4af8dac95a17dfa1ebd3",
+                            "name_unq": "efi_man",
+                            "coinBalance": 2844520
+                        },
+                        {
+                            "userId": "w_3b54991037d4ad538cf69947551fab45",
+                            "name_unq": "Kw",
+                            "coinBalance": 2166440
+                        },
+                        {
+                            "userId": "w_a1496914dd2b84123456056dd3eae97e",
+                            "name_unq": "Emily",
+                            "coinBalance": 1480193
+                        },
+                        {
+                            "userId": "w_37e87f7a0455acfef99c636b7dba8d54",
+                            "name_unq": "Ami",
+                            "coinBalance": 708663
+                        },
+                        {
+                            "userId": "w_a89e988a3e3b5b93bf4b578fc06e67f0",
+                            "name_unq": "Player_7",
+                            "coinBalance": 67000
+                        },
+                        {
+                            "userId": "w_41f9fcc2b8c58910f23e13e9b39f5f2a",
+                            "name_unq": "LeoFI",
+                            "coinBalance": 57000
+                        },
+                        {
+                            "userId": "w_8fcf4794b50a6b10d7292a531c9aa6f3",
+                            "name_unq": "Player_20",
+                            "coinBalance": 49000
+                        },
+                        {
+                            "userId": "w_7162768a6ddf5db3b61e4f973792ca6b",
+                            "name_unq": "Player_4",
+                            "coinBalance": 39000
+                        },
+                        {
+                            "userId": "w_40e6a4f0e3d13d28cf3013007a2902b1",
+                            "name_unq": "Player_13",
+                            "coinBalance": 36000
+                        },
+                        {
+                            "userId": "w_6f1b21fa2f62e7287568149e3ee2f48c",
+                            "name_unq": "Player_26",
+                            "coinBalance": 30077
+                        },
+                        {
+                            "userId": "w_df418a7db1416c4ad6223a50a7d02691",
+                            "name_unq": "Player_23",
+                            "coinBalance": 27000
+                        },
+                        {
+                            "userId": "w_673f90fcd1dd14d50b393c83c76b2824",
+                            "name_unq": "Player_33",
+                            "coinBalance": 25362
+                        },
+                        {
+                            "userId": "w_8c4525442862ab3be58ed0bc7904a750",
+                            "name_unq": "Player_16",
+                            "coinBalance": 21090
+                        },
+                        {
+                            "userId": "w_db55f5695d09db3ff05b15cd37fc288d",
+                            "name_unq": "Player_32",
+                            "coinBalance": 16000
+                        },
+                        {
+                            "userId": "w_67ac07e1648aa161ea1a54fcf246546d",
+                            "name_unq": "Player_27",
+                            "coinBalance": 16000
+                        },
+                        {
+                            "userId": "w_748b546222a62ebaf70bb4840f4fbe40",
+                            "name_unq": "Player_10",
+                            "coinBalance": 10458
+                        },
+                        {
+                            "userId": "w_6773631d0ad2f42743d5cf63049fd1d0",
+                            "name_unq": "Player_29",
+                            "coinBalance": 10000
+                        },
+                        {
+                            "userId": "w_f73af04f3528d671700066a1e8ee8e57",
+                            "name_unq": "Player_12",
+                            "coinBalance": 7000
+                        },
+                        {
+                            "userId": "w_57e336a5f939775e653ccc176fab11b0",
+                            "name_unq": "Player_19",
+                            "coinBalance": 1000
+                        },
+                        {
+                            "userId": "w_f1d69b735b384a29e2a0a5ab3fcf11e1",
+                            "name_unq": "Player_14",
+                            "coinBalance": 0
+                        }
+                      ]
+                    },
+                    "userRank":{
+                      "type":"array",
+                      "items":{
+                        "type":"object",
+                        "properties":{
+                          "userId": {"type":"string", "example": "w_a1496914dd2b84123456056dd3eae97e"},
+                          "name_unq": {"type":"string", "example": "Emily"},
+                          "coinBalance": {"type":"integer", "example": 1480193},
+                          "rank": {"type":"integer", "example": 3}
+                        }
+                      },
+                      "example":[
+                        {
+                            "userId": "w_a1496914dd2b84123456056dd3eae97e",
+                            "name_unq": "Emily",
+                            "coinBalance": 1480193,
+                            "rank": 3
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        $ref: "../../responses/401.yaml"
+      },
+      "404": {
+        $ref: "../../responses/404.yaml"
+      },
+      "500": {
+        $ref: "../../responses/500.yaml"
+      }
+    }
+  }
+    
+}

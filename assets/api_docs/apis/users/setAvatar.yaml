@@ -1,0 +1,56 @@
+{
+  "post": {
+    "summary": "Set user avatar",
+    "tags": [
+      "Users"
+    ],
+    "requestBody": {
+      "description": "Request body when set user avatar",
+      "required": "true",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "userId": {"type":"string", "example": "w_3b54991037d4ad538cf69947551fab45"},
+              "avatar": {"type":"string", "example": "Crabby Orange"}
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {"type":"string", "example": "false"},
+                "responseTimestamp": {"type":"string", "example": "2024-01-19T06:59:58.604Z"},
+                "statusCode": {"type": "integer", "example": "200"},
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "msg": {"type": "string", "example": "Set avatar successful"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        $ref: "../../responses/401.yaml"
+      },
+      "404": {
+        $ref: "../../responses/404.yaml"
+      },
+      "500": {
+        $ref: "../../responses/500.yaml"
+      }
+    }
+  }
+    
+}

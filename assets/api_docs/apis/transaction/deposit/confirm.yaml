@@ -1,0 +1,94 @@
+{
+  "post":
+    {
+      "summary": "Confirm deposit",
+      "tags": ["Transactions"],
+      "requestBody":
+        {
+          "description": "Request body when user confirm deposit",
+          "required": "true",
+          "content":
+            {
+              "application/json":
+                {
+                  "schema":
+                    {
+                      "type": "object",
+                      "properties":
+                        {
+                          "walletId":
+                            {
+                              "type": "string",
+                              "example": "0xcd6073f5645c6cc92afae4ba64b8fbba3cba2bd9",
+                            },
+                          "amount": { "type": "string", "example": "10" },
+                          "internalTx": { "type": "string", "example": "65ab7d888237b2db612df3a0" },
+                          "status": { "type": "interger", "example": 1 }
+                        },
+                    },
+                },
+            },
+        },
+      "responses":
+        {
+          "200":
+            {
+              "description": "Successfully",
+              "content":
+                {
+                  "application/json":
+                    {
+                      "schema":
+                        {
+                          "type": "object",
+                          "properties":
+                            {
+                              "error": { "type": "string", "example": "false" },
+                              "responseTimestamp":
+                                {
+                                  "type": "string",
+                                  "example": "2024-01-20T08:00:08.884Z",
+                                },
+                              "statusCode":
+                                { "type": "integer", "example": 200 },
+                              "data":
+                                {
+                                  "type": "object",
+                                  "properties":
+                                    {
+                                      "data":
+                                        {
+                                          "type": "object",
+                                          "properties":
+                                            {
+                                              "walletId":
+                                                {
+                                                  "type": "string",
+                                                  "example": "0xcd6073f5645c6cc92afae4ba64b8fbba3cba2bd9",
+                                                },
+                                              "amount":
+                                                {
+                                                  "type": "string",
+                                                  "example": "10",
+                                                },
+                                              "internalTx":
+                                                {
+                                                  "type": "string",
+                                                  "example": "65ab7d888237b2db612df3a0",
+                                                },
+                                              "status": { "type": "integer", "example": 1 }
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+          "401": { $ref: "../../../responses/401.yaml" },
+          "404": { $ref: "../../../responses/404.yaml" },
+          "500": { $ref: "../../../responses/500.yaml" },
+        },
+    },
+}

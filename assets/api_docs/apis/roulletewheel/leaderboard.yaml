@@ -1,0 +1,111 @@
+{
+  "post": {
+    "summary": "Get Lucky Wheel Leaderboard",
+    "tags": [
+      "RoulleteWheel"
+    ],
+    "requestBody": {
+      "description": "Request body when get Lucky Wheel leaderboard",
+      "required": "true",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {"type":"string", "example": "false"},
+                "responseTimestamp": {"type":"string", "example": "2024-01-19T07:11:16.328Z"},
+                "statusCode": {"type": "integer", "example": "200"},
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "time": {"type": "integer"},
+                      "account": {"type": "string"},
+                      "prize": {"type": "integer"},
+                    }
+                  },
+                  "example": [
+                    {
+                      "time": 1705650433253,
+                      "account": "Kwang",
+                      "prize": 556000
+                    },
+                    {
+                      "time": 1704349996614,
+                      "account": "Player_6",
+                      "prize": 89000
+                    },
+                    {
+                      "time": 1705394474531,
+                      "account": "Player_5",
+                      "prize": 76000
+                    },
+                    {
+                      "time": 1701671785907,
+                      "account": "Player_7",
+                      "prize": 67000
+                    },
+                    {
+                      "time": 1705638356102,
+                      "account": "Player_9",
+                      "prize": 67000
+                    },
+                    {
+                      "time": 1703729792689,
+                      "account": "Player_11",
+                      "prize": 57000
+                    },
+                    {
+                      "time": 1704529703082,
+                      "account": "Player_20",
+                      "prize": 49000
+                    },
+                    {
+                      "time": 1704299218492,
+                      "account": "Player_4",
+                      "prize": 39000
+                    },
+                    {
+                      "time": 1703148435691,
+                      "account": "Player_13",
+                      "prize": 36000
+                    },
+                    {
+                      "time": 1704333971173,
+                      "account": "Player_26",
+                      "prize": 30000
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        $ref: "../../responses/401.yaml"
+      },
+      "404": {
+        $ref: "../../responses/404.yaml"
+      },
+      "500": {
+        $ref: "../../responses/500.yaml"
+      }
+    }
+  }
+    
+}

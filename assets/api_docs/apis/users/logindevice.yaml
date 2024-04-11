@@ -1,0 +1,73 @@
+{
+  "post": {
+    "summary": "Login into system by Device ID from Game Client",
+    "tags": [
+      "Users"
+    ],
+    "parameters": [
+      {
+        "in": "header",
+        "name": "x-auth-signature",
+        "schema": {
+          "type": "string",
+          "example": "6c665753dc1c36881586b2f7b47f0228b4835d295c4322ef76e50351c08b58ea"
+        }
+      }
+    ],
+    "requestBody": {
+      "description": "Request body when login by  Device ID from Game Client",
+      "required": "true",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "deviceId": {"type":"string", "example": "abcxyzdfsdfsdf"}
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+            "type": "object",
+            "properties": {
+              "error": {"type":"string", "example": "false"},
+              "responseTimestamp": {"type":"string", "example": "2023-08-25T08:36:11.463Z"},
+              "statusCode": {"type": "integer", "example": "200"},
+              "data": {
+                "type": "object",
+                "properties": {
+                  "userData": {"type": "array", "items": {
+                    "type": "object",
+                    "properties": {
+                      "username": {"type": "string", "example": "Player_xx"},
+                      "blockType": {"type": "integer", "example": "0"},
+                      "userId": {"type": "string", "example": "abcswerwerwe"},
+                      "loginToken": {"type": "string", "example": "abceeeee"}
+                    }
+                  }}
+                }
+              }
+            }
+          }
+          }
+        }
+      },
+      "401": {
+        $ref: "../../responses/401.yaml"
+      },
+      "404": {
+        $ref: "../../responses/404.yaml"
+      },
+      "500": {
+        $ref: "../../responses/500.yaml"
+      }
+    }
+  }
+    
+}

@@ -1,0 +1,100 @@
+{
+  "get": {
+    "summary": "Get game by type",
+    "tags": [
+      "Games"
+    ],
+    "parameters": [
+      {
+        "name": "type",
+        "in": "path",
+        "required": "true",
+        "schema": {
+          "type": "string",
+          "example": "1,2"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {"type":"string", "example": "false"},
+                "responseTimestamp": {"type":"string", "example": "2023-08-25T08:36:11.463Z"},
+                "statusCode": {"type": "integer", "example": "200"},
+                "data": {
+                  "type": "array", 
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {"type": "string"},
+                      "icon": {"type": "string"},
+                      "web_link": {"type": "string"},
+                      "ios_link": {"type": "string"},
+                      "android_link": {"type": "string"},
+                      "pc_link": {"type": "string"},
+                      "star": {"type": "integer"},
+                      "click": {"type": "integer"},
+                      "resolution": {"type": "object", "properties": {"width": {"type": "integer"}, "height": {"type": "integer"}}},
+                      "gameType": {"type": "array", "items": {"type": "integer"}},
+                      "subGameType": {"type": "array", "items": {"type": "integer"}},
+                      "gameCode": {"type": "array", "items": {"type": "object", "properties": {"name":{"type": "string"}, "type": {"type": "integer"}}}},
+                      "subGameCode": {"type": "array", "items": {"type": "object", "properties": {"name":{"type": "string"}, "type": {"type": "integer"}}}},
+                    }
+                  },
+                  "example": [
+                    {
+                      "name": "TreasureLand®: Clash of Royale",
+                      "icon": "https://play.ibgtech.co/static/icons/game/tlweb_250.png",
+                      "web_link": "https://play.ibgtech.co/u/tl.web/",
+                      "ios_link": "",
+                      "android_link": "",
+                      "pc_link": "",
+                      "star": 5,
+                      "click": 289,
+                      "resolution": {
+                          "width": 720,
+                          "height": 1050
+                      },
+                      "gameType": [
+                          5
+                      ],
+                      "subGameType": [
+                          1
+                      ],
+                      "gameCode": [
+                          {
+                              "name": "Strategy",
+                              "type": 5
+                          }
+                      ],
+                      "subGameCode": [
+                        {
+                            "name": "MultiPlayer",
+                            "type": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        $ref: "../../responses/401.yaml"
+      },
+      "404": {
+        $ref: "../../responses/404.yaml"
+      },
+      "500": {
+        $ref: "../../responses/500.yaml"
+      }
+    }
+  }
+}

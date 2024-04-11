@@ -1,0 +1,155 @@
+{
+  "post": {
+    "summary": "Get list Gun",
+    "tags": [
+      "RoyalPass"
+    ],
+    "requestBody": {
+      "description": "Request body when user get list gun",
+      "required": "true",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "userId": {"type":"string", "example": "w_3b54991037d4ad538cf69947551fab45"}
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {"type":"string", "example": "false"},
+                "responseTimestamp": {"type":"string", "example": "2024-01-19T08:29:03.872Z"},
+                "statusCode": {"type": "integer", "example": "200"},
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "nftId": {
+                      "type": "array",
+                      "items":{
+                        "type": "object",
+                        "properties":{
+                          "userId": {"type": "string"},
+                          "name": {"type": "string"},
+                          "type": {"type": "string"},
+                          "activatedDate": {"type": "string"},
+                          "nextTimeClaimDate": {"type": "string"},
+                          "isClaimable": {"type": "integer"},
+                          "bulletBonus": {"type": "integer"},
+                          "bulletBuy": {"type": "integer"},
+                          "gunConfig": {
+                            "type": "object",
+                            "properties": {
+                              "id": {"type": "integer"},
+                              "name": {"type": "string"},
+                              "type": {"type": "string"},
+                              "totalDate": {"type": "integer"},
+                              "dailyBullet": {"type": "integer"},
+                              "imageUrl": {"type": "string"}
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "1": {
+                        "userId": "w_3b54991037d4ad538cf69947551fab45",
+                        "name": "Legendary",
+                        "type": "4",
+                        "activatedDate": "1710117097000",
+                        "nextTimeClaimDate": "1710549097000",
+                        "gunConfig": {
+                            "id": 4,
+                            "name": "Legendary",
+                            "type": 4,
+                            "totalDate": 30,
+                            "dailyBullet": 33333,
+                            "imageUrl": null
+                        },
+                        "isClaimable": 1,
+                        "bulletBonus": "33333",
+                        "bulletBuy": "0"
+                    },
+                    "2": {
+                        "userId": "w_3b54991037d4ad538cf69947551fab45",
+                        "name": "Rare",
+                        "type": "2",
+                        "activatedDate": "1710117097000",
+                        "gunConfig": {
+                            "id": 2,
+                            "name": "Rare",
+                            "type": 2,
+                            "totalDate": 30,
+                            "dailyBullet": 14167,
+                            "imageUrl": null
+                        },
+                        "isClaimable": 0,
+                        "bulletBonus": "740",
+                        "bulletBuy": "0"
+                    },
+                    "3": {
+                        "userId": "w_3b54991037d4ad538cf69947551fab45",
+                        "name": "Elite",
+                        "type": "3",
+                        "activatedDate": "1710117097000",
+                        "gunConfig": {
+                            "id": 3,
+                            "name": "Elite",
+                            "type": 3,
+                            "totalDate": 30,
+                            "dailyBullet": 21000,
+                            "imageUrl": null
+                        },
+                        "isClaimable": 0,
+                        "bulletBonus": "1500",
+                        "bulletBuy": "0"
+                    },
+                    "4": {
+                        "userId": "w_3b54991037d4ad538cf69947551fab45",
+                        "name": "Common",
+                        "type": "1",
+                        "activatedDate": "1710117097000",
+                        "gunConfig": {
+                            "id": 1,
+                            "name": "Common",
+                            "type": 1,
+                            "totalDate": 30,
+                            "dailyBullet": 10667,
+                            "imageUrl": null
+                        },
+                        "isClaimable": 0,
+                        "bulletBonus": "834",
+                        "bulletBuy": "0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        $ref: "../../responses/401.yaml"
+      },
+      "403": {
+        $ref: "../../responses/403.yaml"
+      },
+      "404": {
+        $ref: "../../responses/404.yaml"
+      },
+      "500": {
+        $ref: "../../responses/500.yaml"
+      }
+    }
+  }
+    
+}

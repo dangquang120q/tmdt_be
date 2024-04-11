@@ -1,0 +1,61 @@
+{
+  "post": {
+    "summary": "Get a user's play history",
+    "tags": [
+      "Users"
+    ],
+    "requestBody": {
+      "description": "Request body when get history",
+      "required": "true",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "walletId": {"type":"string", "example": "0x168024d261d01a9068a6d89356ff4bbbed21e5c7"},
+              "gameType": {"type":"string", "example": "Luckycrab"}
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+            "type": "object",
+            "properties": {
+              "error": {"type":"string", "example": "false"},
+              "responseTimestamp": {"type":"string", "example": "2024-01-19T06:59:58.604Z"},
+              "statusCode": {"type": "integer", "example": "200"},
+              "data": {
+                "type": "object",
+                "properties": {
+                  "contract_address": {"type": "string", "example": "0xbB410706A689Fef4FDD67CDBf7fedD161d660930"},
+                  "timeTx": {"type": "integer", "example": 1705399886},
+                  "transaction": {"type": "string", "example": "0x3e95febc7f1dd3727d411e300c225872c0f125409bd671a4d4f90e68e21626bd"},
+                  "bet": {"type": "integer", "example": 1600},
+                  "efihWin": {"type": "integer", "example": 0},
+                  "goldWin": {"type": "integer", "example": 1600}
+                }
+              }
+            }
+          }
+          }
+        }
+      },
+      "401": {
+        $ref: "../../responses/401.yaml"
+      },
+      "404": {
+        $ref: "../../responses/404.yaml"
+      },
+      "500": {
+        $ref: "../../responses/500.yaml"
+      }
+    }
+  }
+    
+}

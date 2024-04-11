@@ -1,0 +1,188 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Swagger Json",
+    "description": "This is a generated swagger json for your sails project",
+    "termsOfService": "http://example.com/terms",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.efihub.io/"
+    }
+  ],
+  "externalDocs": {
+    "url": "https://swagger.io/docs"
+  },
+  "tags": [
+    {
+      "name": "Games",
+      "description": "Sails blueprint actions for the **Games** model"
+    },
+    {
+      "name": "Users",
+      "description": "Sails blueprint actions for the **Users** model"
+    },
+    {
+      "name": "Scores",
+      "description": "Sails blueprint actions for the **Scores** model"
+    },
+    {
+      "name": "BoGame",
+      "description": "Sails blueprint actions for the **BoGame** model"
+    },
+    {
+      "name": "RoulleteWheel",
+      "description": "Sails blueprint actions for the **RoulleteWheel** model"
+    },
+    {
+      "name": "RoyalPass",
+      "description": "Sails blueprint actions for the **RoyalPass** model"
+    },
+    {
+      "name": "Quest",
+      "description": "Sails blueprint actions for the **Quest** model"
+    }
+  ],
+  "paths": {
+    "/user/loginwallet": {
+      $ref: "../api_docs/apis/users/loginwallet.yaml",
+    },
+    "/user/loginfacebook": {
+      $ref: "../api_docs/apis/users/loginfacebook.yaml",
+    },
+    "/user/logindevice": {
+      $ref: "../api_docs/apis/users/logindevice.yaml",
+    },
+    "/user/setAvatar": {
+      $ref: "../api_docs/apis/users/setAvatar.yaml",
+    },
+    "/user/changeName": {
+      $ref: "../api_docs/apis/users/changeName.yaml",
+    },
+    "/user/getHistory": {
+      $ref: "../api_docs/apis/users/getHistory.yaml",
+    },
+    "/user/checkSignUp":{
+      $ref: "../api_docs/apis/users/checkSignUp.yaml"
+    },
+    "/user/logout":{
+      $ref: "../api_docs/apis/users/logout.yaml"
+    },
+    "/game/luckywheel/login": {
+      $ref: "../api_docs/apis/roulletewheel/wheelLogin.yaml",
+    },
+    "/game/luckywheel/start": {
+      $ref: "../api_docs/apis/roulletewheel/start.yaml",
+    },
+    "/game/luckywheel/leaderboard": {
+      $ref: "../api_docs/apis/roulletewheel/leaderboard.yaml",
+    },
+    "/game/luckywheel/history": {
+      $ref: "../api_docs/apis/roulletewheel/history.yaml",
+    },
+    "/game/bogame/login": {
+      $ref: "../api_docs/apis/bogame/boLogin.yaml",
+    },
+    "/game/bogame/order": {
+      $ref: "../api_docs/apis/bogame/order.yaml",
+    },
+    "/game/bogame/history": {
+      $ref: "../api_docs/apis/bogame/history.yaml",
+    },
+    "/game/bogame/balance": {
+      $ref: "../api_docs/apis/bogame/balance.yaml",
+    },
+    "/game/bogame/openTrade": {
+      $ref: "../api_docs/apis/bogame/openTrade.yaml",
+    },
+    "/game/allType": {
+      $ref: "../api_docs/apis/games/getAllGameType.yaml"
+    },
+    "/game/allSubType": {
+      $ref: "../api_docs/apis/games/allSubType.yaml"
+    },
+    "/game/name/:name": {
+      $ref: "../api_docs/apis/games/searchGameName.yaml"
+    },
+    "/game/id": {
+      $ref: "../api_docs/apis/games/getGameById.yaml"
+    },
+    "/game/myGame": {
+      $ref: "../api_docs/apis/games/myGame.yaml"
+    },
+    "/game/type/:type": {
+      $ref: "../api_docs/apis/games/getGameByType.yaml"
+    },
+    "/game/latest": {
+      $ref: "../api_docs/apis/games/latestGame.yaml"
+    },
+    "/game/hottest": {
+      $ref: "../api_docs/apis/games/hottestGame.yaml"
+    },
+    "/game": {
+      $ref: "../api_docs/apis/games/game.yaml"
+    },
+    "/game/click": {
+      $ref: "../api_docs/apis/games/updateClick.yaml"
+    },
+    "/score/top10/:game": {
+      $ref: "../api_docs/apis/scores/getTop10.yaml"
+    },
+    "/score/update": {
+      $ref: "../api_docs/apis/scores/updateScore.yaml"
+    },
+    "/royalpass/listRoyalPass": {
+      $ref: "../api_docs/apis/royalpass/listRoyalPass.yaml"
+    },
+    "/royalpass/listNFT": {
+      $ref: "../api_docs/apis/royalpass/listNFT.yaml"
+    },
+    "/royalpass/listChest": {
+      $ref: "../api_docs/apis/royalpass/listChest.yaml"
+    },
+    "/royalpass/listGun": {
+      $ref: "../api_docs/apis/royalpass/listGun.yaml"
+    },
+    "/royalpass/activeRoyalPass": {
+      $ref: "../api_docs/apis/royalpass/activeRoyalPass.yaml"
+    },
+    "/royalpass/claimRoyalPass": {
+      $ref: "../api_docs/apis/royalpass/claimRoyalPass.yaml"
+    },
+    "/royalpass/claimNFT": {
+      $ref: "../api_docs/apis/royalpass/claimNFT.yaml"
+    },
+    "/royalpass/claimChest": {
+      $ref: "../api_docs/apis/royalpass/claimChest.yaml"
+    },
+    "/royalpass/claimBullet": {
+      $ref: "../api_docs/apis/royalpass/claimBullet.yaml"
+    },
+    "/quest/getListQuest": {
+      $ref: "../api_docs/apis/quest/getListQuest.yaml"
+    },
+    "/quest/claimQuest": {
+      $ref: "../api_docs/apis/quest/claimQuest.yaml"
+    },
+    "/transaction/deposit/create": {
+      $ref: "../api_docs/apis/transaction/deposit/create.yaml"
+    },
+    "/transaction/deposit/confirm": {
+      $ref: "../api_docs/apis/transaction/deposit/confirm.yaml"
+    },
+    "/transaction/withdraw/create": {
+      $ref: "../api_docs/apis/transaction/withdraw/create.yaml"
+    },
+    "/transaction/withdraw/confirm": {
+      $ref: "../api_docs/apis/transaction/withdraw/confirm.yaml"
+    },
+    "/leaderboard": {
+      $ref: "../api_docs/apis/scores/leaderboard.yaml"
+    }
+  }
+}

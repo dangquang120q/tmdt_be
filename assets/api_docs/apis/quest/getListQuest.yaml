@@ -1,0 +1,203 @@
+{
+  "post": {
+    "summary": "Get list Quest",
+    "tags": [
+      "Quest"
+    ],
+    "requestBody": {
+      "description": "Request body when user get list quest",
+      "required": "true",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "userId": {"type":"string", "example": "w_3b54991037d4ad538cf69947551fab45"}
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {"type":"string", "example": "false"},
+                "responseTimestamp": {"type":"string", "example": "2024-01-19T08:29:03.872Z"},
+                "statusCode": {"type": "integer", "example": "200"},
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object", 
+                    "properties":
+                    {
+                      "id": {"type": "integer"},
+                      "info": {"type": "string"},
+                      "bonus": {
+                        "type": "array",
+                        "items":{"type": "integer"}
+                      },
+                      "claimDate": {"type": "integer"},
+                      "status": {"type": "integer"}
+                    }
+                  },
+                  "example": [
+                    {
+                      "id": 1,
+                      "info": "First Login",
+                      "bonus": [
+                        2,
+                        0,
+                        0,
+                        10
+                      ],
+                      "claimDate": 1703758578804,
+                      "status": 1
+                    },
+                    {
+                      "id": 3,
+                      "info": "Achieved 100,000 Gold",
+                      "bonus": [
+                        1,
+                        0,
+                        0,
+                        10
+                      ],
+                      "status": 1
+                    },
+                    {
+                      "id": 4,
+                      "info": "Achieved 200,000 Gold",
+                      "bonus": [
+                        1,
+                        0,
+                        0,
+                        10
+                      ],
+                      "status": 1
+                    },
+                    {
+                      "id": 5,
+                      "info": "Achieved 300,000 Gold",
+                      "bonus": [
+                        1,
+                        0,
+                        0,
+                        10
+                      ],
+                      "status": 0
+                    },
+                    {
+                      "id": 6,
+                      "info": "Achieved 400,000 Gold",
+                      "bonus": [
+                        1,
+                        0,
+                        0,
+                        10
+                      ],
+                      "status": 1
+                    },
+                    {
+                      "id": 7,
+                      "info": "Achieved 500,000 Gold",
+                      "bonus": [
+                        3,
+                        0,
+                        0,
+                        10
+                      ],
+                      "status": 1
+                    },
+                    {
+                      "id": 10,
+                      "info": "Achieved 100,000 G-EFIH",
+                      "bonus": [
+                        3,
+                        0,
+                        0,
+                        10
+                      ],
+                      "status": 1
+                    },
+                    {
+                      "id": 11,
+                      "info": "Achieved 200,000 G-EFIH",
+                      "bonus": [
+                        3,
+                        0,
+                        0,
+                        10
+                      ],
+                      "status": 1
+                    },
+                    {
+                      "id": 12,
+                      "info": "Achieved 300,000 G-EFIH",
+                      "bonus": [
+                        3,
+                        0,
+                        0,
+                        10
+                      ],
+                      "status": 1
+                    },
+                    {
+                      "id": 13,
+                      "info": "Achieved 400,000 G-EFIH",
+                      "bonus": [
+                        3,
+                        0,
+                        0,
+                        10
+                      ],
+                      "status": 1
+                    },
+                    {
+                      "id": 14,
+                      "info": "Achieved 500,000 G-EFIH",
+                      "bonus": [
+                        10,
+                        0,
+                        0,
+                        10
+                      ],
+                      "status": 1
+                    },
+                    {
+                      "id": 2,
+                      "info": "Play 10 games a day",
+                      "bonus": [
+                        2,
+                        0,
+                        0,
+                        10
+                      ],
+                      "claimDate": 1705568664917,
+                      "reachable": 11,
+                      "status": 0
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        $ref: "../../responses/401.yaml"
+      },
+      "404": {
+        $ref: "../../responses/404.yaml"
+      },
+      "500": {
+        $ref: "../../responses/500.yaml"
+      }
+    }
+  }
+    
+}

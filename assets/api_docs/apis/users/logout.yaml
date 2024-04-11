@@ -1,0 +1,48 @@
+{
+  "post": {
+    "summary": "Logout",
+    "tags": [
+      "Users"
+    ],
+    "requestBody": {
+      "description": "Request body when user log out",
+      "required": "true",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": false,
+                "responseTimestamp": "2024-03-19T02:50:15.071Z",
+                "statusCode": 200,
+                "data": {
+                    "statusCode": 200,
+                    "error": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        $ref: "../../responses/404.yaml"
+      },
+      "500": {
+        $ref: "../../responses/500.yaml"
+      }
+    }
+  }  
+}

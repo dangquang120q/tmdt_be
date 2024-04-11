@@ -1,0 +1,123 @@
+{
+  "post": {
+    "summary": "Get user's Lucky Wheel History",
+    "tags": [
+      "RoulleteWheel"
+    ],
+    "requestBody": {
+      "description": "Request body when user get Lucky Wheel history",
+      "required": "true",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "walletId": {"type":"string", "example": "0xb885dc98ce4b706e54da8a4e9d20b7499ae809f3"}
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {"type":"string", "example": "false"},
+                "responseTimestamp": {"type":"string", "example": "2024-01-19T07:11:16.328Z"},
+                "statusCode": {"type": "integer", "example": "200"},
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "no": {"type": "integer"},
+                      "time": {"type": "integer"},
+                      "goldWin": {"type": "integer"},
+                      "tokenWin": {"type": "integer"},
+                    }
+                  },
+                  "example": [
+                    {
+                      "no": 1,
+                      "time": 1705650433259,
+                      "goldWin": 3000,
+                      "tokenWin": 1500
+                    },
+                    {
+                      "no": 2,
+                      "time": 1704443427684,
+                      "goldWin": 7000,
+                      "tokenWin": 300
+                    },
+                    {
+                      "no": 3,
+                      "time": 1704443413087,
+                      "goldWin": 8000,
+                      "tokenWin": 1200
+                    },
+                    {
+                      "no": 4,
+                      "time": 1704443358665,
+                      "goldWin": 2000,
+                      "tokenWin": 1800
+                    },
+                    {
+                      "no": 5,
+                      "time": 1704443351424,
+                      "goldWin": 1000,
+                      "tokenWin": 300
+                    },
+                    {
+                      "no": 6,
+                      "time": 1704443344163,
+                      "goldWin": 1000,
+                      "tokenWin": 600
+                    },
+                    {
+                      "no": 7,
+                      "time": 1704443336920,
+                      "goldWin": 2000,
+                      "tokenWin": 300
+                    },
+                    {
+                      "no": 8,
+                      "time": 1704443329679,
+                      "goldWin": 3000,
+                      "tokenWin": 900
+                    },
+                    {
+                      "no": 9,
+                      "time": 1704443322417,
+                      "goldWin": 5000,
+                      "tokenWin": 1200
+                    },
+                    {
+                      "no": 10,
+                      "time": 1704337488975,
+                      "goldWin": 20000,
+                      "tokenWin": 300
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        $ref: "../../responses/401.yaml"
+      },
+      "404": {
+        $ref: "../../responses/404.yaml"
+      },
+      "500": {
+        $ref: "../../responses/500.yaml"
+      }
+    }
+  }
+    
+}

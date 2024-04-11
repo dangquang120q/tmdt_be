@@ -1,0 +1,57 @@
+{
+  "HUD": {
+    "hInfo": [0, 0, 0, 0, 0, 0, 1],
+    "trophies": 0
+  },
+  "LuckyWheel": 0,
+  "verVips": 0,
+  "verCoins": 0,
+  "Coins2": 0,
+  "Coins": 0,
+  "Vips": 0,
+  "Settings": {
+    "sound": 1,
+    "music": 1
+  },
+  "ConfirmCode": 0,
+  "AvatarID": 0,
+  "BussinessVerify": 0,
+  "EventCoin": 0,
+  "Mobile": "",
+  "Passport": "",
+  "VCoin": 0,
+  "VCoinPayment": 0,
+  "IsOpt": 0,
+  "LP": 0,
+  "isPurchase": 0,
+  "Quest": {
+    "login": {
+      "claimDate": "",
+      "status": 0
+    },
+    "playGame": {
+      "claimDate": "",
+      "status": -1,
+      "reachableHash": 0,
+      "reachable": 0
+    },
+    "goldRank": {
+      "milestone": [0],
+      "reachable": 0
+    },
+    "gefihRank": {
+      "milestone": [0],
+      "reachable": 0
+    },
+    "holdNFT": {
+      "claimDate": "",
+      "status": -1
+    },
+    "earlySupporter":{
+      "claimDate": "",
+      "status": -1
+    }
+  },
+  "nftGun": [],
+  "isClaimFreeGun": 0
+}

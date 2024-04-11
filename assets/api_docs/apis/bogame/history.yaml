@@ -1,0 +1,132 @@
+{
+  "post": {
+    "summary": "Get user's Enfi Trade History",
+    "tags": [
+      "BoGame"
+    ],
+    "requestBody": {
+      "description": "Request body when user get Enfi Trade history",
+      "required": "true",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "walletId": {"type":"string", "example": "0xb885dc98ce4b706e54da8a4e9d20b7499ae809f3"}
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {"type":"string", "example": "false"},
+                "responseTimestamp": {"type":"string", "example": "2024-01-19T07:11:16.328Z"},
+                "statusCode": {"type": "integer", "example": "200"},
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {"type": "string"},
+                      "userId": {"type": "string"},
+                      "orderType": {"type": "integer"},
+                      "stringDuration": {"type": "string"},
+                      "duration": {"type": "integer"},
+                      "size": {"type": "integer"},
+                      "offset": {"type": "string"},
+                      "openPrice": {"type": "integer"},
+                      "closePrice": {"type": "integer"},
+                      "openTime": {"type": "integer"},
+                      "closeTime": {"type": "integer"},
+                      "updatedAt": {"type": "integer"},
+                      "isWin": {"type": "integer"}
+                    }
+                  },
+                  "example": [
+                    {
+                      "_id": "65a8e77159be6b68f60fdf34",
+                      "userId": "w_3b54991037d4ad538cf69947551fab45",
+                      "orderType": 1,
+                      "stringDuration": "1m",
+                      "duration": 1,
+                      "size": 197009,
+                      "offset": "1",
+                      "openPrice": 42735.83,
+                      "closePrice": 42737.34,
+                      "openTime": 1705568113368,
+                      "closeTime": 1705568173479,
+                      "updatedAt": 1705568173463,
+                      "isWin": 1
+                    },
+                    {
+                      "_id": "65a8e76f59be6b68f60fdf33",
+                      "userId": "w_3b54991037d4ad538cf69947551fab45",
+                      "orderType": 1,
+                      "stringDuration": "1m",
+                      "duration": 1,
+                      "size": 340439,
+                      "offset": "1",
+                      "openPrice": 42735.83,
+                      "closePrice": 42740.85,
+                      "openTime": 1705568111988,
+                      "closeTime": 1705568172219,
+                      "updatedAt": 1705568172157,
+                      "isWin": 1
+                    },
+                    {
+                      "_id": "65a8e76e59be6b68f60fdf32",
+                      "userId": "w_3b54991037d4ad538cf69947551fab45",
+                      "orderType": 0,
+                      "stringDuration": "1m",
+                      "duration": 1,
+                      "size": 393450,
+                      "offset": "1",
+                      "openPrice": 42735.83,
+                      "closePrice": 42740.84,
+                      "openTime": 1705568110753,
+                      "closeTime": 1705568170902,
+                      "updatedAt": 1705568170859,
+                      "isWin": -1
+                    },
+                    {
+                      "_id": "65a8e76d59be6b68f60fdf31",
+                      "userId": "w_3b54991037d4ad538cf69947551fab45",
+                      "orderType": 1,
+                      "stringDuration": "1m",
+                      "duration": 1,
+                      "size": 548842,
+                      "offset": "1",
+                      "openPrice": 42735.84,
+                      "closePrice": 42740.84,
+                      "openTime": 1705568109533,
+                      "closeTime": 1705568169722,
+                      "updatedAt": 1705568169683,
+                      "isWin": 1
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        $ref: "../../responses/401.yaml"
+      },
+      "404": {
+        $ref: "../../responses/404.yaml"
+      },
+      "500": {
+        $ref: "../../responses/500.yaml"
+      }
+    }
+  }
+    
+}

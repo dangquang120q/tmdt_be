@@ -1,0 +1,95 @@
+{
+  "post": {
+    "summary": "Get list Chest NFT",
+    "tags": [
+      "RoyalPass"
+    ],
+    "requestBody": {
+      "description": "Request body when user get list chest nft",
+      "required": "true",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "userId": {"type":"string", "example": "w_3b54991037d4ad538cf69947551fab45"}
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {"type":"string", "example": "false"},
+                "responseTimestamp": {"type":"string", "example": "2024-01-19T08:29:03.872Z"},
+                "statusCode": {"type": "integer", "example": "200"},
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "listNFT": {
+                      "type": "array",
+                      "items":{
+                        "type": "object",
+                        "properties":{
+                          "id": {"type": "integer"},
+                          "transactionId": {"type": "string"},
+                          "avatarId": {"type": "string"},
+                          "nftID": {"type": "integer"},
+                          "userId": {"type": "string"},
+                          "nftType": {"type": "string"},
+                          "earnedGold": {"type": "integer"},
+                          "earnedToken": {"type": "integer"},
+                          "activatedDate": {"type": "string"},
+                          "claimedDate": {"type": "string"},
+                          "isValid": {"type": "integer"},
+                          "oldOwner": {"type": "string"}
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "listNFT": [
+                        {
+                            "id": 47,
+                            "transactionId": "0x7d7c4a95e6ca3100cde9ac959d7bf65b9223a27bca8aadbaaa230762754ffv",
+                            "avatarId": null,
+                            "nftID": 13,
+                            "userId": "w_3b54991037d4ad538cf69947551fab45",
+                            "nftType": "RCNFT",
+                            "earnedGold": 0,
+                            "earnedToken": 0,
+                            "activatedDate": null,
+                            "claimedDate": null,
+                            "isValid": 1,
+                            "oldOwner": null
+                        }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        $ref: "../../responses/401.yaml"
+      },
+      "403": {
+        $ref: "../../responses/403.yaml"
+      },
+      "404": {
+        $ref: "../../responses/404.yaml"
+      },
+      "500": {
+        $ref: "../../responses/500.yaml"
+      }
+    }
+  }
+    
+}

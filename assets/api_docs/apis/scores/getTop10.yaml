@@ -1,0 +1,65 @@
+{
+  "get": {
+    "summary": "Get Top 10 scores in a game",
+    "tags": [
+      "Scores"
+    ],
+    "parameters": [
+      {
+        "name": "game",
+        "in": "path",
+        "required": "true",
+        "schema": {
+          "type": "string",
+          "example": "63bfcae2b6f407309b5fe96d"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {"type":"string", "example": "false"},
+                "responseTimestamp": {"type":"string", "example": "2023-08-25T08:36:11.463Z"},
+                "statusCode": {"type": "integer", "example": "200"},
+                "data": {
+                  "type": "array", 
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "username": {"type": "string"},
+                      "score": {"type": "integer"}
+                    }
+                  },
+                  "example": [
+                    {
+                      "username": "Neo",
+                      "score": 100
+                    },
+                    {
+                      "username": "Daden",
+                      "score": 99
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        $ref: "../../responses/401.yaml"
+      },
+      "404": {
+        $ref: "../../responses/404.yaml"
+      },
+      "500": {
+        $ref: "../../responses/500.yaml"
+      }
+    }
+  }
+}
