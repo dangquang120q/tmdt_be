@@ -91,8 +91,10 @@ module.exports = {
 
   changeInfo: async (req, res) => {
     let response;
-    let newEmail = req.body.newEmail;
-    let newPhone = req.body.newPhone;
+    let fullName = req.body.fullName;
+    let gender = req.body.gender;
+    let dob = req.body.dob;
+    let avatar = req.body.avatar;
     let username = req.body.username;
     try {
       let sql = sqlString.format("select * from user where username = ?", [username]);
@@ -108,7 +110,7 @@ module.exports = {
         return res.send(response);
       }
       else{
-        let sqlUpdate = sqlString.format("update user set email = ?,phone = ? where username = ?", [newEmail,newPhone,username]);
+        let sqlUpdate = sqlString.format("update customer set fullName = ?,gender = ?,dob = ?,avatar = ? where username = ?", [fullName,gender,dob,avatar,username]);
         log(sqlUpdate);
         await sails
           .getDatastore(process.env.MYSQL_DATASTORE)
@@ -121,26 +123,6 @@ module.exports = {
       }
     } catch (error) {
       return res.serverError("Something bad happened on the server: " + error);
-    }
-  },
-
-
-  //   // await sails.sendNativeQuery('Select * from users').then(data => {
-  //   //   console.log(data);
-  //   // });
-  //   // console.log(sails.getDatastore(process.env.MYSQL_DATASTORE));
-  //   await sails.getDatastore(process.env.MYSQL_DATASTORE).sendNativeQuery('Select * from users').then((rows, fields) => {
-  //   //   console.log(rows["rows"][0].userId);
-  //     console.log(jwtoken.sign({userId: rows["rows"][0].userId, password: rows["rows"][0].password}));
-  //   });
-  // },
-  logout: async (req, res) => {
-    try {
-      
-    } catch (error) {
-      log("logout error => " + error.toString());
-      response = new HttpResponse(error, { statusCode: 500, error: true });
-      return res.serverError(response);
     }
   },
   sendReview: async (req, res) => {
