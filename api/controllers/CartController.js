@@ -13,18 +13,22 @@ const { sync } = require("load-json-file");
 module.exports = {
     addProductToCart: async (req, res) => {
         let response;
-        let category = req.body.category;
+        let customer_id = req.body.customer_id;
+        let product_id = req.body.product_id;
+        let qty = req.body.qty;
+        let totalPrice = req.body.totalPrice;
         try {
-            let sql = sqlString.format("select * DISTINCT name from product where category = ?", [category]);
-            let data = await sails
+            let sqlGet = sqlString.format("select id from Cart where customer_id = ?", [customer_id]);
+            let dataGet = await sails
+                .getDatastore(process.env.MYSQL_DATASTORE)
+                .sendNativeQuery(sqlGet);
+            let sql = sqlString.format("insert into CartLine(cart_id,product_id,qty,totalPrice) values(?,?,?,?)", [dataGet["rows"][0]["id"],product_id,qty,totalPrice]);
+            await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
                 .sendNativeQuery(sql);
-            
-            log(data["rows"]);
-            
             response = new HttpResponse(
-                "Change Info Successful",
-                { statusCode: 200, error: false }
+            "Add to Cart Successful",
+            { statusCode: 200, error: false }
             );
             return res.ok(response);
         } catch (error) {
@@ -33,18 +37,19 @@ module.exports = {
     },
     viewCart: async (req, res) => {
         let response;
-        let name = req.body.name;
+        let customer_id = req.body.customer_id;
         try {
-            let x = `%${name}%`
-            let sql = sqlString.format("select * from product where name like ?", [x]);
+            let sqlGet = sqlString.format("select id from Cart where customer_id = ?", [customer_id]);
             let data = await sails
+                .getDatastore(process.env.MYSQL_DATASTORE)
+                .sendNativeQuery(sqlGet);
+            let sql = sqlString.format("select * from CartLine where cart_id = ?", [data["rows"][0]["id"]]);
+            let data2 = await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
                 .sendNativeQuery(sql);
             
-            log(data["rows"]);
-            
             response = new HttpResponse(
-                "Change Info Successful",
+                data2["rows"],
                 { statusCode: 200, error: false }
             );
             return res.ok(response);
@@ -57,37 +62,11 @@ module.exports = {
         let name = req.body.name;
         let response_data = {};
         try {
-            let sql = sqlString.format("select * from product where name = ?", [name]);
+            let sql = sqlString.format("select * from Product where name = ?", [name]);
             let data = await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
                 .sendNativeQuery(sql);
-            response_data = {
-                "lineId": data["rows"][0].lineId,
-                "name": data["rows"][0].name,
-                "brand": data["rows"][0].brand,
-                "variantName": data["rows"][0].variantName,
-                "rate": data["rows"][0].rate,
-                "category": data["rows"][0].category,
-                "default_price": data["rows"][0].default_price,
-                "description": data["rows"][0].description
-            }
-            let options = [];
-            let images = [];
-            for (let index = 0; index < data["rows"].length; index++) {
-                const element = data["rows"][index];
-                let option = {
-                    "id": element.id,
-                    "name": element.name,
-                    "price": element.price,
-                    "quantity": element.quantity,
-                    "featured_image": element.featured_image,
-                    "image": element.image
-                }
-                options.push(option);
-                images.push({"id":element.id,"link":element.image});
-            }
-            response_data.images = images;
-            response_data.options = options;
+            
             response = new HttpResponse(
                 response_data,
                 { statusCode: 200, error: false }
@@ -102,37 +81,11 @@ module.exports = {
         let name = req.body.name;
         let response_data = {};
         try {
-            let sql = sqlString.format("select * from product where name = ?", [name]);
+            let sql = sqlString.format("select * from Product where name = ?", [name]);
             let data = await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
                 .sendNativeQuery(sql);
-            response_data = {
-                "lineId": data["rows"][0].lineId,
-                "name": data["rows"][0].name,
-                "brand": data["rows"][0].brand,
-                "variantName": data["rows"][0].variantName,
-                "rate": data["rows"][0].rate,
-                "category": data["rows"][0].category,
-                "default_price": data["rows"][0].default_price,
-                "description": data["rows"][0].description
-            }
-            let options = [];
-            let images = [];
-            for (let index = 0; index < data["rows"].length; index++) {
-                const element = data["rows"][index];
-                let option = {
-                    "id": element.id,
-                    "name": element.name,
-                    "price": element.price,
-                    "quantity": element.quantity,
-                    "featured_image": element.featured_image,
-                    "image": element.image
-                }
-                options.push(option);
-                images.push({"id":element.id,"link":element.image});
-            }
-            response_data.images = images;
-            response_data.options = options;
+            
             response = new HttpResponse(
                 response_data,
                 { statusCode: 200, error: false }
@@ -142,19 +95,42 @@ module.exports = {
           return res.serverError("Something bad happened on the server: " + error);
         }
     },
-    addAddress: async (req, res) => {
+    listAddress: async (req, res) => {
         let response;
-        let category = req.body.category;
+        let customer_id = req.body.customer_id;
         try {
-            let sql = sqlString.format("select * DISTINCT name from product where category = ?", [category]);
+            let sql = sqlString.format("select * from Address where customer_id = ?", [customer_id]);
             let data = await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
-                .sendNativeQuery(sql);
-            
-            log(data["rows"]);
-            
+                .sendNativeQuery(sql); 
             response = new HttpResponse(
-                "Change Info Successful",
+                data["rows"],
+                { statusCode: 200, error: false }
+            );
+            return res.ok(response);
+        } catch (error) {
+          return res.serverError("Something bad happened on the server: " + error);
+        }
+    },
+    addAddress: async (req, res) => {
+        let response;
+        let customer_id = req.body.customer_id;
+        let name = req.body.name;
+        let phone = req.body.phone;
+        let address = req.body.address;
+        let type = req.body.type;
+        try {
+            let sqlCount = sqlString.format("select COUNT(*) as count from Address");
+            let data = await sails
+                .getDatastore(process.env.MYSQL_DATASTORE)
+                .sendNativeQuery(sqlCount); 
+
+            let sql = sqlString.format("insert into Address(id,customer_id,name,phone,address,type) values(?,?,?,?,?,?)", [+(data["rows"][0]["count"]) + 1,customer_id,name,phone,address,type]);
+            await sails
+                .getDatastore(process.env.MYSQL_DATASTORE)
+                .sendNativeQuery(sql); 
+            response = new HttpResponse(
+                "Add Address Successful",
                 { statusCode: 200, error: false }
             );
             return res.ok(response);
@@ -164,17 +140,20 @@ module.exports = {
     },
     editAddress: async (req, res) => {
         let response;
-        let category = req.body.category;
+        let customer_id = req.body.customer_id;
+        let id = req.body.address_id;
+        let name = req.body.name;
+        let phone = req.body.phone;
+        let address = req.body.address;
+        let type = req.body.type;
         try {
-            let sql = sqlString.format("select * DISTINCT name from product where category = ?", [category]);
-            let data = await sails
+            let sql = sqlString.format("update Address set name = ?,phone = ?,address = ?,type = ? where id = ?", [name,phone,address,type,id]);
+            log(sql);
+            await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
                 .sendNativeQuery(sql);
-            
-            log(data["rows"]);
-            
             response = new HttpResponse(
-                "Change Info Successful",
+                "Update Address Successful",
                 { statusCode: 200, error: false }
             );
             return res.ok(response);
@@ -184,17 +163,15 @@ module.exports = {
     },
     deleteAddress: async (req, res) => {
         let response;
-        let category = req.body.category;
+        let id = req.body.address_id;
         try {
-            let sql = sqlString.format("select * DISTINCT name from product where category = ?", [category]);
-            let data = await sails
+            let sql = sqlString.format("delete from Address where id = ?", [id]);
+            await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
                 .sendNativeQuery(sql);
-            
-            log(data["rows"]);
-            
+
             response = new HttpResponse(
-                "Change Info Successful",
+                "Delete Address Successful",
                 { statusCode: 200, error: false }
             );
             return res.ok(response);

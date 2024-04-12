@@ -32,7 +32,6 @@ module.exports.routes = {
   "POST /product/getProductByCategory": "ProductController.getProductByCategory",
   "POST /product/searchProduct": "ProductController.searchProduct",
   "POST /product/viewProduct": "ProductController.viewProduct",
-  "POST /product/getProductByCategory": "ProductController.getProductByCategory",
   "POST /product/sendFeedback": "ProductController.sendFeedback",
   "POST /product/getFeedback": "ProductController.getFeedback",
 
@@ -40,6 +39,7 @@ module.exports.routes = {
   "POST /cart/viewCart": "CartController.viewCart",
   "POST /cart/order": "CartController.order",
   "POST /cart/viewOrder": "CartController.viewOrder",
+  "POST /cart/listAddress": "CartController.listAddress",
   "POST /cart/addAddress": "CartController.addAddress",
   "POST /cart/editAddress": "CartController.editAddress",
   "POST /cart/deleteAddress": "CartController.deleteAddress",
