@@ -31,11 +31,10 @@ module.exports = {
         let response;
         let category = req.body.category;
         try {
-            let sqlStr = category ? `select * from Product where category = ${category}` : "select * from Product";
-            let sql = sqlString.format(sqlStr);
+            let sqlStr = category ? sqlString.format("select * from Product where category = ?",[category]) : sqlString.format("select * from Product");
             let data = await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
-                .sendNativeQuery(sql);
+                .sendNativeQuery(sqlStr);
             let response_data = {};
             for (let index = 0; index < data["rows"].length; index++) {
                 const element = data["rows"][index];
