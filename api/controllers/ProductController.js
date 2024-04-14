@@ -11,11 +11,28 @@ const { log } = require("../services/log");
 const { sync } = require("load-json-file");
 
 module.exports = {
+    getCategory: async (req, res) => {
+      let response;
+      try {
+          let sql = sqlString.format("select * from Category");
+          let data = await sails
+              .getDatastore(process.env.MYSQL_DATASTORE)
+              .sendNativeQuery(sql);    
+          response = new HttpResponse(
+              data["rows"],
+              { statusCode: 200, error: false }
+          );
+          return res.ok(response);
+      } catch (error) {
+        return res.serverError("Something bad happened on the server: " + error);
+      }
+  },
     getProductByCategory: async (req, res) => {
         let response;
         let category = req.body.category;
         try {
-            let sql = sqlString.format("select * from Product where category = ?", [category]);
+            let sqlStr = category ? `select * from Product where category = ${category}` : "select * from Product";
+            let sql = sqlString.format(sqlStr);
             let data = await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
                 .sendNativeQuery(sql);
@@ -35,18 +52,20 @@ module.exports = {
                         "description": element.description
                     }
                     let options = [];
-                    let images = [];
+                    let sql = sqlString.format("select * from ProductImage where lineId = ?",[element.lineId]);
+                    let data = await sails
+                        .getDatastore(process.env.MYSQL_DATASTORE)
+                        .sendNativeQuery(sql);
                     let option = {
                         "id": element.id,
                         "name": element.name,
                         "price": element.price,
                         "quantity": element.quantity,
-                        "featured_image": element.featured_image,
+                        "featured_image": element.feature_image,
                         "image": element.image
                     }
                     options.push(option);
-                    images.push({"id":element.id,"link":element.image});
-                    response_data[x].images = images;
+                    response_data[x].images = data["rows"];
                     response_data[x].options = options;
                 }
                 else{
@@ -55,11 +74,10 @@ module.exports = {
                         "name": element.name,
                         "price": element.price,
                         "quantity": element.quantity,
-                        "featured_image": element.featured_image,
+                        "featured_image": element.feature_image,
                         "image": element.image
                     }
                     response_data[x].options.push(option);
-                    response_data[x].images.push({"id":element.id,"link":element.image});
                 }
             }
             let response_arr = [];
@@ -102,18 +120,20 @@ module.exports = {
                         "description": element.description
                     }
                     let options = [];
-                    let images = [];
+                    let sql = sqlString.format("select * from ProductImage where lineId = ?",[element.lineId]);
+                    let data = await sails
+                        .getDatastore(process.env.MYSQL_DATASTORE)
+                        .sendNativeQuery(sql);
                     let option = {
                         "id": element.id,
                         "name": element.name,
                         "price": element.price,
                         "quantity": element.quantity,
-                        "featured_image": element.featured_image,
+                        "featured_image": element.feature_image,
                         "image": element.image
                     }
                     options.push(option);
-                    images.push({"id":element.id,"link":element.image});
-                    response_data[x].images = images;
+                    response_data[x].images = data["rows"];
                     response_data[x].options = options;
                 }
                 else{
@@ -122,11 +142,10 @@ module.exports = {
                         "name": element.name,
                         "price": element.price,
                         "quantity": element.quantity,
-                        "featured_image": element.featured_image,
+                        "featured_image": element.feature_image,
                         "image": element.image
                     }
                     response_data[x].options.push(option);
-                    response_data[x].images.push({"id":element.id,"link":element.image});
                 }
             }
             let response_arr = [];
@@ -163,7 +182,10 @@ module.exports = {
                 "description": data["rows"][0].description
             }
             let options = [];
-            let images = [];
+            let sqlImage = sqlString.format("select * from ProductImage where lineId = ?",[element.lineId]);
+            let dataImage = await sails
+                .getDatastore(process.env.MYSQL_DATASTORE)
+                .sendNativeQuery(sqlImage);
             for (let index = 0; index < data["rows"].length; index++) {
                 const element = data["rows"][index];
                 let option = {
@@ -171,13 +193,12 @@ module.exports = {
                     "name": element.name,
                     "price": element.price,
                     "quantity": element.quantity,
-                    "featured_image": element.featured_image,
+                    "featured_image": element.feature_image,
                     "image": element.image
                 }
                 options.push(option);
-                images.push({"id":element.id,"link":element.image});
             }
-            response_data.images = images;
+            response_data.images = dataImage["rows"];
             response_data.options = options;
             response = new HttpResponse(
                 response_data,

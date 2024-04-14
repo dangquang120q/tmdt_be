@@ -208,4 +208,30 @@ module.exports = {
       return res.serverError("Something bad happened on the server: " + error);
     }
   },
+  getUser: async (req, res) => {
+    let username = req.body.username;
+    try {
+      let sql = sqlString.format("select * from User inner join Customer on User.id = Customer.id where username = ?", [username]);
+      let data = await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sql);
+      if(data["rows"].length == 0){
+        response = new HttpResponse(
+          { msg: "Wrong username" },
+          { statusCode: 401, error: true }
+        );
+        res.status(401);
+        return res.send(response);
+      }
+      else{
+        response = new HttpResponse(
+          data["rows"][0],
+          { statusCode: 200, error: false }
+        );
+        return res.ok(response);
+      }
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
 };

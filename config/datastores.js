@@ -64,13 +64,4 @@ module.exports.datastores = {
     // url: `mysql://${process.env.MYSQL_USER}@${process.env.MYSQL_HOST}:${process.env.MYSQL_PORT}/${process.env.MYSQL_DB}`,
   },
 
-  workerMysql: {
-    adapter: require("sails-mysql"),
-    url: `mysql://${process.env.MYSQL_WORKER_USER}:${process.env.MYSQL_WORKER_PASS}@${process.env.MYSQL_WORKER_HOST}:${process.env.MYSQL_WORKER_PORT}/${process.env.MYSQL_WORKER_DB}`,
-  },
-
-  gamehubMongo: {
-    adapter: require("sails-mongo"),
-    url: `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}`,
-  },
 };

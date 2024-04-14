@@ -22,6 +22,7 @@ module.exports.routes = {
   // 'GET /swagger': 'docs/dist/index.html',
   "POST /user/signup": "UsersController.signup",
   "POST /user/login": "UsersController.login",
+  "POST /user/getUser": "UsersController.getUser",
   "POST /user/changeInfo": "UsersController.changeInfo",
   "POST /user/logout": "UsersController.logout",
   "POST /user/sendReview": "UsersController.sendReview",
@@ -29,6 +30,7 @@ module.exports.routes = {
   "POST /user/addFavourite": "UsersController.addFavourite",
   "POST /user/getFavourite": "UsersController.getFavourite",
 
+  "POST /product/getCategory": "ProductController.getCategory",
   "POST /product/getProductByCategory": "ProductController.getProductByCategory",
   "POST /product/searchProduct": "ProductController.searchProduct",
   "POST /product/viewProduct": "ProductController.viewProduct",
