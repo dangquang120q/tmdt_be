@@ -164,10 +164,10 @@ module.exports = {
     },
     viewProduct: async (req, res) => {
         let response;
-        let name = req.body.name;
+        let lineId = req.body.lineId;
         let response_data = {};
         try {
-            let sql = sqlString.format("select * from Product where name = ?", [name]);
+            let sql = sqlString.format("select * from Product where lineId = ?", [lineId]);
             let data = await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
                 .sendNativeQuery(sql);
@@ -244,21 +244,42 @@ module.exports = {
       },
       getFeedback: async (req, res) => {
         log("getFeedback from user: " + JSON.stringify(req.body));
-        let product_id = req.body.product_id;
+        let lineId = req.body.lineId;
         try {
           let response_data = {};
-          let sql = sqlString.format("select * from Feedback where product_id = ?", [product_id]);
+          let sql = sqlString.format("select * from Product inner join Feedback on Product.id = Feedback.product_id where lineId = ?", [lineId]);
           let data = await sails
             .getDatastore(process.env.MYSQL_DATASTORE)
             .sendNativeQuery(sql);
-          response_data = data["rows"];
+          // let sql = sqlString.format("select * from Feedback where product_id = ?", [product_id]);
+          // let data = await sails
+          //   .getDatastore(process.env.MYSQL_DATASTORE)
+          //   .sendNativeQuery(sql);
+          response_data = {};
+          let rates = [0,0,0,0,0];
+          let comments = [];
           for (let index = 0; index < data["rows"].length; index++) {
-            let sql = sqlString.format("select * from FeedbackReply where feedback_id = ?", [response_data[index].id]);
-            let data = await sails
+            let sqlReply = sqlString.format("select * from FeedbackReply where feedback_id = ?", [data["rows"][index].id]);
+            let dataReply = await sails
               .getDatastore(process.env.MYSQL_DATASTORE)
-              .sendNativeQuery(sql);
-            response_data[index].reply = data["rows"];
+              .sendNativeQuery(sqlReply);
+            rates[data["rows"][index]["rate"] - 1]+=1;
+            let sqlUser = sqlString.format("select * from Customer where id = ?", [data["rows"][index]["customer_id"]]);
+            let dataUser = await sails
+              .getDatastore(process.env.MYSQL_DATASTORE)
+              .sendNativeQuery(sqlUser);
+            comments.push({
+              "name": dataUser["rows"][0]["name"],
+              "avatar": dataUser["rows"][0]["avatar"],
+              "rate": data["rows"][index]["rate"],
+              "content": data["rows"][index]["content"],
+              "createdAt": new Date(data["rows"][index]["createdAt"]),
+              "reply": dataReply["rows"]
+            })
           }
+          response_data.rate_avg = (rates[0] * 1 + rates[1] * 2 + rates[2] * 3 + rates[3] * 4 + rates[4] * 5)/data["rows"].length;
+          response_data.rates = rates;
+          response_data.comments = comments
           response = new HttpResponse(
             response_data,
             { statusCode: 200, error: false }
