@@ -182,7 +182,7 @@ module.exports = {
                 "description": data["rows"][0].description
             }
             let options = [];
-            let sqlImage = sqlString.format("select * from ProductImage where lineId = ?",[element.lineId]);
+            let sqlImage = sqlString.format("select * from ProductImage where lineId = ?",[data["rows"][0].lineId]);
             let dataImage = await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
                 .sendNativeQuery(sqlImage);
