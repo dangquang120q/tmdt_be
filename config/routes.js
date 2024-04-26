@@ -30,6 +30,15 @@ module.exports.routes = {
   "POST /user/addFavourite": "UsersController.addFavourite",
   "POST /user/getFavourite": "UsersController.getFavourite",
 
+  "POST /staff/login": "StaffController.login",
+  "POST /staff/changeProduct": "StaffController.changeProduct",
+  "POST /staff/changeCategory": "StaffController.changeCategory",
+  "POST /user/logout": "StaffController.logout",
+  "POST /user/sendReview": "StaffController.sendReview",
+  "POST /user/getReview": "StaffController.getReview",
+  "POST /user/addFavourite": "StaffController.addFavourite",
+  "POST /user/getFavourite": "StaffController.getFavourite",
+
   "POST /product/getCategory": "ProductController.getCategory",
   "POST /product/getProductByCategory": "ProductController.getProductByCategory",
   "POST /product/searchProduct": "ProductController.searchProduct",
