@@ -22,10 +22,26 @@ module.exports = {
             let dataGet = await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
                 .sendNativeQuery(sqlGet);
-            let sql = sqlString.format("insert into CartLine(cart_id,product_id,qty,totalPrice) values(?,?,?,?)", [dataGet["rows"][0]["id"],product_id,qty,totalPrice]);
-            await sails
+            let sqlGet2 = sqlString.format("select * from CartLine where product_id = ?", [product_id]);
+            let dataGet2 = await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
-                .sendNativeQuery(sql);
+                .sendNativeQuery(sqlGet2);
+            let sqlGet3 = sqlString.format("select * from Product where product_id = ?", [product_id]);
+            let dataGet3 = await sails
+                .getDatastore(process.env.MYSQL_DATASTORE)
+                .sendNativeQuery(sqlGet3);
+            if (dataGet2["rows"].length == 0) {
+                let sql = sqlString.format("insert into CartLine(cart_id,product_id,qty,totalPrice) values(?,?,?,?)", [dataGet["rows"][0]["id"],product_id,qty,dataGet3["rows"][0]["price"] * qty]);
+                await sails
+                    .getDatastore(process.env.MYSQL_DATASTORE)
+                    .sendNativeQuery(sql);
+            }
+            else{
+                let sql = sqlString.format("update CartLine set set qty = qty + ?,totalPrice = totalPrice + ? where id = ?", [qty,qty * dataGet3["rows"][0]["price"],dataGet2["rows"][0]["id"]]);
+                await sails
+                    .getDatastore(process.env.MYSQL_DATASTORE)
+                    .sendNativeQuery(sql);
+            }
             response = new HttpResponse(
             "Add to Cart Successful",
             { statusCode: 200, error: false }
