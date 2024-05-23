@@ -22,7 +22,7 @@ module.exports = {
             let dataGet = await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
                 .sendNativeQuery(sqlGet);
-            let sqlGet2 = sqlString.format("select * from CartLine where product_id = ?", [product_id]);
+            let sqlGet2 = sqlString.format("select * from CartLine where product_id = ? and cart_id = ?", [product_id,dataGet["rows"][0]["id"]]);
             let dataGet2 = await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
                 .sendNativeQuery(sqlGet2);
