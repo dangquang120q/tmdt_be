@@ -37,7 +37,7 @@ module.exports = {
                     .sendNativeQuery(sql);
             }
             else{
-                let sql = sqlString.format("update CartLine set set qty = qty + ?,totalPrice = totalPrice + ? where id = ?", [qty,qty * dataGet3["rows"][0]["price"],dataGet2["rows"][0]["id"]]);
+                let sql = sqlString.format("update CartLine set qty = qty + ?,totalPrice = totalPrice + ? where id = ?", [qty,qty * dataGet3["rows"][0]["price"],dataGet2["rows"][0]["id"]]);
                 await sails
                     .getDatastore(process.env.MYSQL_DATASTORE)
                     .sendNativeQuery(sql);
