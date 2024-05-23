@@ -63,9 +63,14 @@ module.exports = {
             let data2 = await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
                 .sendNativeQuery(sql);
-            
+            let sql3 = sqlString.format("select * from Product where id = ?", [data2["rows"][0]["product_id"]]);
+            let data3 = await sails
+                .getDatastore(process.env.MYSQL_DATASTORE)
+                .sendNativeQuery(sql3);
+            let response_data = data2["rows"];
+            response_data.product = data3["rows"][0];
             response = new HttpResponse(
-                data2["rows"],
+                response_data,
                 { statusCode: 200, error: false }
             );
             return res.ok(response);
