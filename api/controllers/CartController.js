@@ -26,7 +26,7 @@ module.exports = {
             let dataGet2 = await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
                 .sendNativeQuery(sqlGet2);
-            let sqlGet3 = sqlString.format("select * from Product where product_id = ?", [product_id]);
+            let sqlGet3 = sqlString.format("select * from Product where id = ?", [product_id]);
             let dataGet3 = await sails
                 .getDatastore(process.env.MYSQL_DATASTORE)
                 .sendNativeQuery(sqlGet3);
