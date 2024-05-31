@@ -32,65 +32,49 @@ module.exports = {
     let category = req.body.category;
     try {
       let sqlStr = category
-        ? sqlString.format("select * from Product where category = ?", [
+        ? sqlString.format("select * from ProductLine where categoryId = ?", [
             category,
           ])
-        : sqlString.format("select * from Product");
+        : sqlString.format("select * from ProductLine");
       let data = await sails
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sqlStr);
-      let response_data = {};
-      for (let index = 0; index < data["rows"].length; index++) {
-        const element = data["rows"][index];
-        let x = element.name;
-        if (!response_data[x]) {
-          response_data[x] = {
-            lineId: element.lineId,
-            name: element.name,
-            brand: element.brand,
-            variantName: element.variantName,
-            rate: element.rate,
-            category: element.category,
-            default_price: element.default_price,
-            description: element.description,
-          };
-          let options = [];
-          let sql = sqlString.format(
-            "select * from ProductImage where lineId = ?",
-            [element.lineId]
-          );
-          let data = await sails
-            .getDatastore(process.env.MYSQL_DATASTORE)
-            .sendNativeQuery(sql);
-          let option = {
-            id: element.id,
-            name: element.optionName,
-            price: element.price,
-            quantity: element.quantity,
-            featured_image: element.feature_image,
-            image: element.image,
-          };
-          options.push(option);
-          response_data[x].images = data["rows"];
-          response_data[x].options = options;
-        } else {
-          let option = {
-            id: element.id,
-            name: element.optionName,
-            price: element.price,
-            quantity: element.quantity,
-            featured_image: element.feature_image,
-            image: element.image,
-          };
-          response_data[x].options.push(option);
-        }
+      const productLineList = data["rows"];
+      let response_data = [];
+
+      // Get product option
+      for (let index = 0; index < productLineList.length; index++) {
+        const productLine = productLineList[index];
+
+        let sqlProductStr = sqlString.format(
+          "select * from Product where lineId = ?",
+          [productLine.id]
+        );
+        let productList = await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sqlProductStr);
+        productLine.options = productList["rows"];
+        let sqlImage = sqlString.format(
+          "select * from ProductImage where lineId = ?",
+          [productLine.id]
+        );
+        let dataImage = await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sqlImage);
+        let sqlRate = sqlString.format(
+          "select avg(rate) as rate from Product where lineId = ?",
+          [productLine.id]
+        );
+        data = await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sqlRate);
+
+        productLine.rate = data["rows"][0].rate;
+        productLine.images = dataImage["rows"];
+        response_data.push(productLine);
       }
-      let response_arr = [];
-      for (let key in response_data) {
-        const element = response_data[key];
-        response_arr.push(element);
-      }
-      response = new HttpResponse(response_arr, {
+
+      response = new HttpResponse(response_data, {
         statusCode: 200,
         error: false,
       });
