@@ -18,16 +18,9 @@ module.exports = {
     let qty = req.body.qty;
     let totalPrice = req.body.totalPrice;
     try {
-      let sqlGet = sqlString.format(
-        "select id from Cart where customer_id = ?",
-        [customer_id]
-      );
-      let dataGet = await sails
-        .getDatastore(process.env.MYSQL_DATASTORE)
-        .sendNativeQuery(sqlGet);
       let sqlGet2 = sqlString.format(
-        "select * from CartLine where product_id = ? and cart_id = ?",
-        [product_id, dataGet["rows"][0]["id"]]
+        "select * from CartLine where productId = ? and customerId = ?",
+        [product_id, customer_id]
       );
       let dataGet2 = await sails
         .getDatastore(process.env.MYSQL_DATASTORE)
@@ -40,13 +33,8 @@ module.exports = {
         .sendNativeQuery(sqlGet3);
       if (dataGet2["rows"].length == 0) {
         let sql = sqlString.format(
-          "insert into CartLine(cart_id,product_id,qty,totalPrice) values(?,?,?,?)",
-          [
-            dataGet["rows"][0]["id"],
-            product_id,
-            qty,
-            dataGet3["rows"][0]["price"] * qty,
-          ]
+          "insert into CartLine(productId,qty,totalPrice,customerId) values(?,?,?,?)",
+          [product_id, qty, dataGet3["rows"][0]["price"] * qty, customer_id]
         );
         await sails
           .getDatastore(process.env.MYSQL_DATASTORE)
@@ -147,10 +135,9 @@ module.exports = {
     let response;
     let customer_id = req.body.customer_id;
     try {
-      let sql = sqlString.format(
-        "select * from Address where customer_id = ?",
-        [customer_id]
-      );
+      let sql = sqlString.format("select * from Address where customerId = ?", [
+        customer_id,
+      ]);
       let data = await sails
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sql);
@@ -177,7 +164,7 @@ module.exports = {
         .sendNativeQuery(sqlCount);
 
       let sql = sqlString.format(
-        "insert into Address(id,customer_id,name,phone,address,type) values(?,?,?,?,?,?)",
+        "insert into Address(id,customerId,name,phone,address,type) values(?,?,?,?,?,?)",
         [+data["rows"][0]["count"] + 1, customer_id, name, phone, address, type]
       );
       await sails
