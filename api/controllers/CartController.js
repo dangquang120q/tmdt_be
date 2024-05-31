@@ -89,6 +89,24 @@ module.exports = {
       return res.serverError("Something bad happened on the server: " + error);
     }
   },
+  deleteCartLine: async (req, res) => {
+    let response;
+    let id = req.body.id;
+    try {
+      let sql = sqlString.format("delete from CartLine where id = ?", [id]);
+      await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sql);
+
+      response = new HttpResponse("Delete Item Successful", {
+        statusCode: 200,
+        error: false,
+      });
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
   order: async (req, res) => {
     let response;
     let name = req.body.name;
