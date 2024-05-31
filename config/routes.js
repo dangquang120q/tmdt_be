@@ -59,6 +59,8 @@ module.exports.routes = {
   "POST /cart/editAddress": "CartController.editAddress",
   "POST /cart/deleteAddress": "CartController.deleteAddress",
 
+  "POST /order/shippingType": "OrderController.getShippingType",
+
   /***************************************************************************
    *                                                                          *
    * More custom routes here...                                               *
