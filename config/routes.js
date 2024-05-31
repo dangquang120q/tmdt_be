@@ -50,6 +50,8 @@ module.exports.routes = {
   "POST /cart/addProductToCart": "CartController.addProductToCart",
   "POST /cart/viewCart": "CartController.viewCart",
   "POST /cart/deleteCart": "CartController.deleteCartLine",
+  "POST /cart/updateCart": "CartController.updateCart",
+
   "POST /cart/order": "CartController.order",
   "POST /cart/viewOrder": "CartController.viewOrder",
   "POST /cart/listAddress": "CartController.listAddress",

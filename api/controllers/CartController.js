@@ -107,6 +107,27 @@ module.exports = {
       return res.serverError("Something bad happened on the server: " + error);
     }
   },
+  updateCart: async (req, res) => {
+    let response;
+    let cartLineId = req.body.id;
+    let qty = req.body.qty;
+    try {
+      let sql = sqlString.format("update CartLine set qty = ? where id = ?", [
+        qty,
+        cartLineId,
+      ]);
+      await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sql);
+      response = new HttpResponse("Update to Cart Successful", {
+        statusCode: 200,
+        error: false,
+      });
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
   order: async (req, res) => {
     let response;
     let name = req.body.name;
