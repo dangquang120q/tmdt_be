@@ -29,6 +29,7 @@
     "sails-mongo": "^2.0.1",
     "sails-mysql": "3.0.1",
     "sqlstring": "^2.3.3",
+    "uuid": "^9.0.1",
     "web3": "1.7.4"
   },
   "devDependencies": {

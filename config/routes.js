@@ -60,7 +60,8 @@ module.exports.routes = {
   "POST /cart/deleteAddress": "CartController.deleteAddress",
 
   "POST /order/shippingType": "OrderController.getShippingType",
-
+  "POST /order/getVoucherOrder": "OrderController.getVoucherOrder",
+  "POST /order/createOrder": "OrderController.createOrder",
   /***************************************************************************
    *                                                                          *
    * More custom routes here...                                               *
