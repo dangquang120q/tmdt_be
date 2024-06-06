@@ -117,6 +117,7 @@ module.exports = {
     let customer_id = req.body.customer_id;
     let product_id = req.body.product_id;
     let content = req.body.content;
+    let headline = req.body.headline;
     let rate = req.body.rate;
     try {
       let sql = sqlString.format("select * from Customer where id = ?", [
@@ -133,10 +134,13 @@ module.exports = {
         res.status(403);
         return res.send(response);
       } else {
-        let sqlFeedback = sqlString.format(
-          "insert into Feedback(product_id,customer_id,content,rate) values(?,?,?,?)",
-          [product_id, customer_id, content, rate]
-        );
+        let sqlFeedback = sqlString.format("call sp_add_feedback(?,?,?,?,?)", [
+          product_id,
+          customer_id,
+          content,
+          rate,
+          headline,
+        ]);
         await sails
           .getDatastore(process.env.MYSQL_DATASTORE)
           .sendNativeQuery(sqlFeedback);
@@ -155,10 +159,9 @@ module.exports = {
     let lineId = req.body.lineId;
     try {
       let response_data = {};
-      let sql = sqlString.format(
-        "select * from Product inner join Feedback on Product.id = Feedback.productId where lineId = ?",
-        [lineId]
-      );
+      let sql = sqlString.format("select * from Feedback where productId = ?", [
+        lineId,
+      ]);
       let data = await sails
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sql);
@@ -189,6 +192,7 @@ module.exports = {
           avatar: dataUser["rows"][0]["avatar"],
           rate: data["rows"][index]["rate"],
           content: data["rows"][index]["content"],
+          headline: data["rows"][index]["headline"],
           createdAt: new Date(data["rows"][index]["createdAt"]),
           reply: dataReply["rows"],
         });

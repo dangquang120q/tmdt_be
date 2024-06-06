@@ -9,6 +9,8 @@ const sqlString = require("sqlstring");
 const { HttpResponse } = require("../services/http-response");
 const { log } = require("../services/log");
 const { generateUniqueID } = require("../services/create-uuid");
+const { ORDER_STATUS } = require("../services/const");
+const { getOrderDetail } = require("../services/product");
 
 module.exports = {
   getShippingType: async (req, res) => {
@@ -96,6 +98,52 @@ module.exports = {
         );
         return res.send(response);
       }
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
+
+  getListOrderByCustomer: async (req, res) => {
+    const customerId = req.body.customerId;
+    const type = req.body.status;
+    try {
+      const status = ORDER_STATUS.find((item) => item.id == type).value;
+      let sql = sqlString.format("CALL sp_get_order_by_customer(?,?)", [
+        customerId,
+        status,
+      ]);
+      let data = await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sql);
+      let orders = data["rows"][0];
+      for (let index = 0; index < orders.length; index++) {
+        orders[index] = await getOrderDetail(orders[index]);
+      }
+      let response = new HttpResponse(orders, {
+        statusCode: 200,
+        error: false,
+      });
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
+  updateOrderStatus: async (req, res) => {
+    try {
+      let orderId = req.body.orderId;
+      let status = req.body.status;
+      let sql = sqlString.format(
+        "insert into OrderTracking(orderId,status) values(?,?)",
+        [orderId, status]
+      );
+      await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sql);
+      response = new HttpResponse("Update Order Status Successful", {
+        statusCode: 200,
+        error: false,
+      });
+      return res.ok(response);
     } catch (error) {
       return res.serverError("Something bad happened on the server: " + error);
     }

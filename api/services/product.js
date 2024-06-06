@@ -17,16 +17,39 @@ module.exports = {
     let dataImage = await sails
       .getDatastore(process.env.MYSQL_DATASTORE)
       .sendNativeQuery(sqlImage);
-    let sqlRate = sqlString.format(
-      "select avg(rate) as rate from Product where lineId = ?",
-      [productLine.id]
-    );
-    data = await sails
-      .getDatastore(process.env.MYSQL_DATASTORE)
-      .sendNativeQuery(sqlRate);
 
-    productLine.rate = data["rows"][0].rate;
     productLine.images = dataImage["rows"];
     return productLine;
+  },
+  getOrderDetail: async function (order) {
+    try {
+      let sqlProductStr = sqlString.format("CALL sp_get_products_in_order(?)", [
+        order.id,
+      ]);
+      let dataProducts = await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sqlProductStr);
+      order.products = dataProducts["rows"][0];
+      let sqlVoucherStr = sqlString.format(
+        "select * from Voucher where id = ?",
+        [order.voucherId]
+      );
+      let dataVouchers = await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sqlVoucherStr);
+      order.voucher = dataVouchers["rows"][0];
+      let sqlShippingStr = sqlString.format(
+        "select * from ShippingType where id = ?",
+        [order.shippingTypeId]
+      );
+      let dataShipping = await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sqlShippingStr);
+      order.shipping = dataShipping["rows"][0];
+      return order;
+    } catch (error) {
+      console.log("Get order detail error", error);
+      return order;
+    }
   },
 };

@@ -174,9 +174,10 @@ module.exports = {
     let response;
     let customer_id = req.body.customer_id;
     try {
-      let sql = sqlString.format("select * from Address where customerId = ?", [
-        customer_id,
-      ]);
+      let sql = sqlString.format(
+        "select * from Address where customerId = ? and isHide = 0",
+        [customer_id]
+      );
       let data = await sails
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sql);
@@ -248,7 +249,9 @@ module.exports = {
     let response;
     let id = req.body.address_id;
     try {
-      let sql = sqlString.format("delete from Address where id = ?", [id]);
+      let sql = sqlString.format("update Address set isHide = 1 where id = ?", [
+        id,
+      ]);
       await sails
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sql);

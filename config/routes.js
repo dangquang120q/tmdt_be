@@ -62,6 +62,10 @@ module.exports.routes = {
   "POST /order/shippingType": "OrderController.getShippingType",
   "POST /order/getVoucherOrder": "OrderController.getVoucherOrder",
   "POST /order/createOrder": "OrderController.createOrder",
+  "POST /order/getListOrderByCustomer":
+    "OrderController.getListOrderByCustomer",
+  "POST /order/updateOrderStatus": "OrderController.updateOrderStatus",
+
   /***************************************************************************
    *                                                                          *
    * More custom routes here...                                               *
