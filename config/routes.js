@@ -62,6 +62,7 @@ module.exports.routes = {
   "POST /order/getListOrderByCustomer":
     "OrderController.getListOrderByCustomer",
   "POST /order/updateOrderStatus": "OrderController.updateOrderStatus",
+  "POST /order/getOrder": "OrderController.getOrder",
 
   "POST /admin/getListUser": "StaffController.getListUser",
   "POST /admin/deleteUser": "StaffController.deleteUser",
