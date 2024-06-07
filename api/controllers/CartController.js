@@ -128,48 +128,7 @@ module.exports = {
       return res.serverError("Something bad happened on the server: " + error);
     }
   },
-  order: async (req, res) => {
-    let response;
-    let name = req.body.name;
-    let response_data = {};
-    try {
-      let sql = sqlString.format("select * from Product where name = ?", [
-        name,
-      ]);
-      let data = await sails
-        .getDatastore(process.env.MYSQL_DATASTORE)
-        .sendNativeQuery(sql);
 
-      response = new HttpResponse(response_data, {
-        statusCode: 200,
-        error: false,
-      });
-      return res.ok(response);
-    } catch (error) {
-      return res.serverError("Something bad happened on the server: " + error);
-    }
-  },
-  viewOrder: async (req, res) => {
-    let response;
-    let name = req.body.name;
-    let response_data = {};
-    try {
-      let sql = sqlString.format("select * from Product where name = ?", [
-        name,
-      ]);
-      let data = await sails
-        .getDatastore(process.env.MYSQL_DATASTORE)
-        .sendNativeQuery(sql);
-
-      response = new HttpResponse(response_data, {
-        statusCode: 200,
-        error: false,
-      });
-      return res.ok(response);
-    } catch (error) {
-      return res.serverError("Something bad happened on the server: " + error);
-    }
-  },
   listAddress: async (req, res) => {
     let response;
     let customer_id = req.body.customer_id;

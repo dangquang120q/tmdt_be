@@ -108,6 +108,7 @@ module.exports = {
     let dob = req.body.dob;
     let avatar = req.body.avatar;
     let customer_id = req.body.customer_id;
+
     try {
       let sqlUpdate = sqlString.format(
         "update Customer set name = ?,gender = ?,dob = ?,avatar = ? where id = ?",

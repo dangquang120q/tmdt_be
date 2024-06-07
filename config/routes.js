@@ -33,7 +33,6 @@ module.exports.routes = {
   "POST /staff/login": "StaffController.login",
   "POST /staff/changeProduct": "StaffController.changeProduct",
   "POST /staff/changeCategory": "StaffController.changeCategory",
-  "POST /user/logout": "StaffController.logout",
   "POST /user/sendReview": "StaffController.sendReview",
   "POST /user/getReview": "StaffController.getReview",
   "POST /user/addFavourite": "StaffController.addFavourite",
@@ -52,8 +51,6 @@ module.exports.routes = {
   "POST /cart/deleteCart": "CartController.deleteCartLine",
   "POST /cart/updateCart": "CartController.updateCart",
 
-  "POST /cart/order": "CartController.order",
-  "POST /cart/viewOrder": "CartController.viewOrder",
   "POST /cart/listAddress": "CartController.listAddress",
   "POST /cart/addAddress": "CartController.addAddress",
   "POST /cart/editAddress": "CartController.editAddress",
@@ -65,6 +62,9 @@ module.exports.routes = {
   "POST /order/getListOrderByCustomer":
     "OrderController.getListOrderByCustomer",
   "POST /order/updateOrderStatus": "OrderController.updateOrderStatus",
+
+  "POST /admin/getListUser": "StaffController.getListUser",
+  "POST /admin/deleteUser": "StaffController.deleteUser",
 
   /***************************************************************************
    *                                                                          *
