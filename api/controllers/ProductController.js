@@ -113,6 +113,46 @@ module.exports = {
       return res.serverError("Something bad happened on the server: " + error);
     }
   },
+  updateProductInfor: async (req, res) => {
+    const {
+      id,
+      brand,
+      categoryId,
+      defaultPrice,
+      description,
+      name,
+      variantName,
+      weight,
+    } = req.body;
+    try {
+      let sql = sqlString.format(
+        "UPDATE ProductLine SET brand = ?, categoryId = ?, defaultPrice = ?, description = ?, name = ?,  variantName = ?, weight = ? WHERE id = ?",
+        [
+          brand,
+          categoryId,
+          defaultPrice,
+          description,
+          name,
+          variantName,
+          weight,
+          id,
+        ]
+      );
+      await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sql);
+      response = new HttpResponse(
+        { msg: "Update Product Successful" },
+        {
+          statusCode: 200,
+          error: false,
+        }
+      );
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
   sendFeedback: async (req, res) => {
     let customer_id = req.body.customer_id;
     let product_id = req.body.product_id;

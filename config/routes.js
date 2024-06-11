@@ -45,6 +45,7 @@ module.exports.routes = {
   "POST /product/viewProduct": "ProductController.viewProduct",
   "POST /product/sendFeedback": "ProductController.sendFeedback",
   "POST /product/getFeedback": "ProductController.getFeedback",
+  "POST /product/updateInfo": "ProductController.updateProductInfor",
 
   "POST /cart/addProductToCart": "CartController.addProductToCart",
   "POST /cart/viewCart": "CartController.viewCart",

@@ -72,7 +72,7 @@ module.exports = {
       for (let index = 0; index < data2["rows"].length; index++) {
         const element = data2["rows"][index];
         let sql3 = sqlString.format(
-          "select Product.id, price, variantName, lineId, optionName, quantity, featureImage, image, name, brand as lineid from Product JOIN ProductLine where Product.id = ? and Product.lineId = ProductLine.id",
+          "select Product.id, price, lineId, optionName, quantity, featureImage, image, name, brand from Product JOIN ProductLine where Product.id = ? and Product.lineId = ProductLine.id",
           [element["productId"]]
         );
         let data3 = await sails
