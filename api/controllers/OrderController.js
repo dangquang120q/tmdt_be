@@ -159,6 +159,7 @@ module.exports = {
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sql);
       let order = await getOrderDetail(data["rows"][0]);
+
       let response = new HttpResponse(order, {
         statusCode: 200,
         error: false,

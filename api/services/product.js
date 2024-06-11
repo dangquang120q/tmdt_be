@@ -26,6 +26,7 @@ module.exports = {
       let sqlProductStr = sqlString.format("CALL sp_get_products_in_order(?)", [
         order.id,
       ]);
+      // get order Vourcher
       let dataProducts = await sails
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sqlProductStr);
@@ -38,6 +39,7 @@ module.exports = {
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sqlVoucherStr);
       order.voucher = dataVouchers["rows"][0];
+      // get order Shipping
       let sqlShippingStr = sqlString.format(
         "select * from ShippingType where id = ?",
         [order.shippingTypeId]
@@ -46,6 +48,24 @@ module.exports = {
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sqlShippingStr);
       order.shipping = dataShipping["rows"][0];
+      // Get order Tracking
+      let trackingSql = sqlString.format(
+        `SELECT * FROM OrderTracking where orderId = ?`,
+        [order.id]
+      );
+      const trackingData = await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(trackingSql);
+      order.tracking = trackingData["rows"];
+      order.status = order.tracking[order.tracking.length - 1].status;
+      // Get Order Address
+      let addressSql = sqlString.format(`SELECT * FROM Address where id = ?`, [
+        order.addressId,
+      ]);
+      const addressData = await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(addressSql);
+      order.address = addressData["rows"][0];
       return order;
     } catch (error) {
       console.log("Get order detail error", error);
