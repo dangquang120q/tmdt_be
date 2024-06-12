@@ -46,6 +46,8 @@ module.exports.routes = {
   "POST /product/sendFeedback": "ProductController.sendFeedback",
   "POST /product/getFeedback": "ProductController.getFeedback",
   "POST /product/updateInfo": "ProductController.updateProductInfor",
+  "POST /product/changeOption": "ProductController.changeProductOptions",
+  "POST /product/changeImage": "ProductController.changeProductImage",
 
   "POST /cart/addProductToCart": "CartController.addProductToCart",
   "POST /cart/viewCart": "CartController.viewCart",
@@ -64,6 +66,7 @@ module.exports.routes = {
     "OrderController.getListOrderByCustomer",
   "POST /order/updateOrderStatus": "OrderController.updateOrderStatus",
   "POST /order/getOrder": "OrderController.getOrder",
+  "GET /order/getAll": "OrderController.getListOrder",
 
   "POST /admin/getListUser": "StaffController.getListUser",
   "POST /admin/deleteUser": "StaffController.deleteUser",
