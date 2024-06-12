@@ -128,17 +128,37 @@ module.exports = {
       return res.serverError("Something bad happened on the server: " + error);
     }
   },
+  getListOrder: async (req, res) => {
+    try {
+      let sql = sqlString.format("CALL sp_get_list_order", []);
+      let data = await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sql);
+      let orders = data["rows"][0];
+      // for (let index = 0; index < orders.length; index++) {
+      //   orders[index] = await getOrderDetail(orders[index]);
+      // }
+      let response = new HttpResponse(orders, {
+        statusCode: 200,
+        error: false,
+      });
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
   updateOrderStatus: async (req, res) => {
     try {
       let orderId = req.body.orderId;
       let status = req.body.status;
-      let sql = sqlString.format(
-        "insert into OrderTracking(orderId,status) values(?,?)",
-        [orderId, status]
-      );
+      let sql = sqlString.format("CALL sp_update_order_status(?,?)", [
+        status,
+        orderId,
+      ]);
       await sails
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sql);
+
       response = new HttpResponse("Update Order Status Successful", {
         statusCode: 200,
         error: false,

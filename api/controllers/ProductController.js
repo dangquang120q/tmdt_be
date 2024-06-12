@@ -123,26 +123,127 @@ module.exports = {
       name,
       variantName,
       weight,
+      type,
     } = req.body;
     try {
-      let sql = sqlString.format(
-        "UPDATE ProductLine SET brand = ?, categoryId = ?, defaultPrice = ?, description = ?, name = ?,  variantName = ?, weight = ? WHERE id = ?",
-        [
-          brand,
-          categoryId,
-          defaultPrice,
-          description,
-          name,
-          variantName,
-          weight,
-          id,
-        ]
-      );
+      let sql,
+        msg,
+        response,
+        resData = {};
+      if (type == 2) {
+        sql = sqlString.format(
+          "UPDATE ProductLine SET brand = ?, categoryId = ?, defaultPrice = ?, description = ?, name = ?,  variantName = ?, weight = ? WHERE id = ?",
+          [
+            brand,
+            categoryId,
+            defaultPrice,
+            description,
+            name,
+            variantName,
+            weight,
+            id,
+          ]
+        );
+        msg = "Update Product Successful!";
+      } else if (type == 1) {
+        sql = sqlString.format(
+          "INSERT INTO ProductLine(brand,categoryId,defaultPrice,description,name,variantName,weight) VALUES (?,?,?,?,?,?,?)",
+          [
+            brand,
+            categoryId,
+            defaultPrice,
+            description,
+            name,
+            variantName,
+            weight,
+          ]
+        );
+        msg = "Add Product Successful!";
+      } else if (type == 3) {
+        sql = sqlString.format("DELETE FROM ProductLine WHERE id = ?", [id]);
+        msg = "Delete Product Successful!";
+      }
       await sails
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sql);
+      if (type == 1) {
+        const sqlSelect = sqlString.format(
+          "SELECT id FROM ProductLine WHERE name = ?",
+          [name]
+        );
+        const data = await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sqlSelect);
+        resData = { id: data["rows"][0].id };
+      }
       response = new HttpResponse(
-        { msg: "Update Product Successful" },
+        { msg: msg, ...resData },
+        {
+          statusCode: 200,
+          error: false,
+        }
+      );
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
+  changeProductOptions: async (req, res) => {
+    const { type, option } = req.body;
+    const { lineId, optionName, price, quantity, image, featureImage } = option;
+    let sql;
+    try {
+      if (type == 1) {
+        sql = sqlString.format(
+          "insert into Product(optionName, price, quantity,image,featureImage,lineId) values(?,?,?,?,?,?)",
+          [optionName, price, quantity, image, featureImage, lineId]
+        );
+      } else if (type == 2) {
+        sql = sqlString.format(
+          "UPDATE Product SET optionName = ?, price = ?, quantity = ?, image = ?, featureImage = ? WHERE id = ?",
+          [optionName, price, quantity, image, featureImage, option.id]
+        );
+      } else if (type == 3) {
+        sql = sqlString.format("DELETE FROM Product WHERE id = ?", [option.id]);
+      }
+      await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sql);
+      let sqlGet = sqlString.format("SELECT * FROM Product WHERE lineId = ?", [
+        lineId,
+      ]);
+      const data = await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sqlGet);
+      let response = new HttpResponse(
+        { msg: "Change Option Successful", options: data["rows"] },
+        {
+          statusCode: 200,
+          error: false,
+        }
+      );
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
+  changeProductImage: async (req, res) => {
+    let { id, image, type, lineId } = req.body;
+    try {
+      let sql;
+      if (type == 1) {
+        sql = sqlString.format(
+          "INSERT INTO ProductImage(image,lineId) VALUES(?,?)",
+          [image, lineId]
+        );
+      } else if (type == 2) {
+        sql = sqlString.format("DELETE FROM ProductImage WHERE id = ?", [id]);
+      }
+      await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sql);
+      let response = new HttpResponse(
+        { msg: "Change Product Image Successful" },
         {
           statusCode: 200,
           error: false,
