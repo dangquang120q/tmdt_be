@@ -260,6 +260,7 @@ module.exports = {
     let content = req.body.content;
     let headline = req.body.headline;
     let rate = req.body.rate;
+    let id = req.body.id || 0;
     try {
       let sql = sqlString.format("select * from Customer where id = ?", [
         customer_id,
@@ -275,13 +276,10 @@ module.exports = {
         res.status(403);
         return res.send(response);
       } else {
-        let sqlFeedback = sqlString.format("call sp_add_feedback(?,?,?,?,?)", [
-          product_id,
-          customer_id,
-          content,
-          rate,
-          headline,
-        ]);
+        let sqlFeedback = sqlString.format(
+          "call sp_add_feedback(?,?,?,?,?,?)",
+          [product_id, customer_id, content, rate, headline, id]
+        );
         await sails
           .getDatastore(process.env.MYSQL_DATASTORE)
           .sendNativeQuery(sqlFeedback);
@@ -348,6 +346,35 @@ module.exports = {
       response_data.rates = rates;
       response_data.comments = comments;
       response = new HttpResponse(response_data, {
+        statusCode: 200,
+        error: false,
+      });
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
+  checkFeedback: async (req, res) => {
+    let { userId, lineId } = req.body;
+    let resData = {};
+    try {
+      const sql = sqlString.format("CALL sp_check_get_review(?,?)", [
+        lineId,
+        userId,
+      ]);
+      let data = await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sql);
+      const ref = data["rows"][0][0]["ref"];
+      const feedback = data["rows"][1][0];
+
+      resData.ref = ref;
+      if (ref == 0) {
+        resData.msg = "You have not bought this product!";
+      } else {
+        resData.feedback = feedback || {};
+      }
+      let response = new HttpResponse(resData, {
         statusCode: 200,
         error: false,
       });
