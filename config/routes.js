@@ -67,6 +67,9 @@ module.exports.routes = {
 
   "POST /admin/getListUser": "StaffController.getListUser",
   "POST /admin/deleteUser": "StaffController.deleteUser",
+  "POST /admin/changeStaff": "AdminController.changeStaff",
+  "POST /admin/getStaff": "AdminController.getStaff",
+  "POST /admin/getListStaff": "AdminController.getListStaff"
 
   /***************************************************************************
    *                                                                          *
