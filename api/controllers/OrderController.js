@@ -158,7 +158,22 @@ module.exports = {
       await sails
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sql);
-
+      let sql2 = sqlString.format("Select * from ProductOrder where orderId = ?", [
+        orderId,
+      ]);
+      let data2 = await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sql2);
+      for (let index = 0; index < data2["rows"].length; index++) {
+        const element = data2["rows"][index];
+        let sql3 = sqlString.format("update Product set quantity = quantity + ? where id = ?", [
+          element["qty"],
+          element["productId"]
+        ]);
+        await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql3);
+      }
       response = new HttpResponse("Update Order Status Successful", {
         statusCode: 200,
         error: false,
