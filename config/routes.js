@@ -33,6 +33,8 @@ module.exports.routes = {
   "POST /staff/login": "StaffController.login",
   "POST /staff/changeProduct": "StaffController.changeProduct",
   "POST /staff/changeCategory": "StaffController.changeCategory",
+  "POST /staff/changeVoucher": "StaffController.changeVoucher",
+  "POST /staff/changeShippingType": "StaffController.changeShippingType",
   "POST /user/sendReview": "StaffController.sendReview",
   "POST /user/getReview": "StaffController.getReview",
   "POST /user/addFavourite": "StaffController.addFavourite",

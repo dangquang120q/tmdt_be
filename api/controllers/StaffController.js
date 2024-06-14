@@ -434,4 +434,91 @@ module.exports = {
       return res.serverError("Something bad happened on the server: " + error);
     }
   },
+  changeVoucher: async (req, res) => {
+    let response;
+    let type = req.body.type;
+    let id = req.body.id;
+    let name = req.body.name;
+    let discountPercent = req.body.discountPercent;
+    let discountAmount = req.body.discountAmount;
+    let description = req.body.description;
+    let condition = req.body.condition || "";
+    let startDate = req.body.startDate;
+    let endDate = req.body.endDate;
+    let quantity = req.body.quantity;
+    try {
+      if (type == 1) {
+        let sql = sqlString.format(
+          "insert into Voucher(name,discountPercent,discountAmount,description,condition,startDate,endDate,quantity) values(?,?,?,?,?,?,?,?)",
+          [name,discountPercent,discountAmount, description,condition,startDate,endDate,quantity]
+        );
+        log(sql);
+        await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+      } else if (type == 2) {
+        let sql = sqlString.format(
+          "update Voucher set name = ?,discountPercent = ?,discountAmount = ?,description = ?,condition = ?,startDate = ?,endDate = ?,quantity = ? where id = ?",
+          [name,discountPercent,discountAmount, description,condition,startDate,endDate,quantity, id]
+        );
+        log(sql);
+        await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+      } else {
+        let sql = sqlString.format("delete from Voucher where id = ?", [id]);
+        await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+      }
+      response = new HttpResponse("Change Voucher Successful", {
+        statusCode: 200,
+        error: false,
+      });
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
+  changeShippingType: async (req, res) => {
+    let response;
+    let type = req.body.type;
+    let id = req.body.id;
+    let name = req.body.name;
+    let description = req.body.description;
+    let value = req.body.value;
+    try {
+      if (type == 1) {
+        let sql = sqlString.format(
+          "insert into ShippingType(name,description,value) values(?,?,?)",
+          [name, description, value]
+        );
+        log(sql);
+        await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+      } else if (type == 2) {
+        let sql = sqlString.format(
+          "update ShippingType set name = ?,description = ?,value = ? where id = ?",
+          [name, description,value , id]
+        );
+        log(sql);
+        await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+      } else {
+        let sql = sqlString.format("delete from ShippingType where id = ?", [id]);
+        await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+      }
+      response = new HttpResponse("Change ShippingType Successful", {
+        statusCode: 200,
+        error: false,
+      });
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
 };
