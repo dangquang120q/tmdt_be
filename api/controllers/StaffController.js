@@ -360,71 +360,54 @@ module.exports = {
     let type = req.body.type;
     try {
       if (type == 1) {
-        let response_data = [];
-        let sql = sqlString.format(`SELECT 
-              p.id as productId,
-              COALESCE(SUM(po.qty), 0) AS total_sold
-          FROM 
-              Product p
-          LEFT JOIN 
-              ProductOrder po ON p.id = po.productId
-          GROUP BY 
-              p.id
-          ORDER BY 
-              total_sold desc;   
-        `);
+        let sql = sqlString.format("CALL sp_get_product_bestseller(?)", [1]);
         let data = await sails
           .getDatastore(process.env.MYSQL_DATASTORE)
           .sendNativeQuery(sql);
-        for (let index = 0; index < data["rows"].length; index++) {
-          const element = data["rows"][index];
-          let sql2 = sqlString.format("select * from Product where id = ?", [
-            element["productId"],
-          ]);
-          let data2 = await sails
-            .getDatastore(process.env.MYSQL_DATASTORE)
-            .sendNativeQuery(sql2);
-          const product = data2["rows"][0];
-          let obj = { ...product };
-          obj.sum = element["total_sold"];
-          response_data.push(obj);
-        }
-        response = new HttpResponse(response_data, {
+        response = new HttpResponse(data["rows"][0], {
           statusCode: 200,
           error: false,
         });
         return res.ok(response);
       } else {
-        let response_data = [];
-        let sql = sqlString.format(`SELECT 
-              p.id as productId,
-              COALESCE(SUM(po.qty), 0) AS total_sold
-          FROM 
-              Product p
-          LEFT JOIN 
-              ProductOrder po ON p.id = po.productId
-          GROUP BY 
-              p.id
-          ORDER BY 
-              total_sold; 
-        `);
+        let sql = sqlString.format("CALL sp_get_product_bestseller(?)", [0]);
         let data = await sails
           .getDatastore(process.env.MYSQL_DATASTORE)
           .sendNativeQuery(sql);
-        for (let index = 0; index < data["rows"].length; index++) {
-          const element = data["rows"][index];
-          let sql2 = sqlString.format("select * from Product where id = ?", [
-            element["productId"],
-          ]);
-          let data2 = await sails
-            .getDatastore(process.env.MYSQL_DATASTORE)
-            .sendNativeQuery(sql2);
-          const product = data2["rows"][0];
-          let obj = { ...product };
-          obj.sum = element["total_sold"];
-          response_data.push(obj);
-        }
-        response = new HttpResponse(response_data, {
+        response = new HttpResponse(data["rows"][0], {
+          statusCode: 200,
+          error: false,
+        });
+        return res.ok(response);
+      }
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
+  productLineStatistics: async (req, res) => {
+    let response;
+    let type = req.body.type;
+    try {
+      if (type == 1) {
+        let sql = sqlString.format("CALL sp_get_productline_bestseller(?)", [
+          1,
+        ]);
+        let data = await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+        response = new HttpResponse(data["rows"][0], {
+          statusCode: 200,
+          error: false,
+        });
+        return res.ok(response);
+      } else {
+        let sql = sqlString.format("CALL sp_get_productline_bestseller(?)", [
+          0,
+        ]);
+        let data = await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+        response = new HttpResponse(data["rows"][0], {
           statusCode: 200,
           error: false,
         });
@@ -450,7 +433,16 @@ module.exports = {
       if (type == 1) {
         let sql = sqlString.format(
           "insert into Voucher(name,discountPercent,discountAmount,description,condition,startDate,endDate,quantity) values(?,?,?,?,?,?,?,?)",
-          [name,discountPercent,discountAmount, description,condition,startDate,endDate,quantity]
+          [
+            name,
+            discountPercent,
+            discountAmount,
+            description,
+            condition,
+            startDate,
+            endDate,
+            quantity,
+          ]
         );
         log(sql);
         await sails
@@ -459,7 +451,17 @@ module.exports = {
       } else if (type == 2) {
         let sql = sqlString.format(
           "update Voucher set name = ?,discountPercent = ?,discountAmount = ?,description = ?,condition = ?,startDate = ?,endDate = ?,quantity = ? where id = ?",
-          [name,discountPercent,discountAmount, description,condition,startDate,endDate,quantity, id]
+          [
+            name,
+            discountPercent,
+            discountAmount,
+            description,
+            condition,
+            startDate,
+            endDate,
+            quantity,
+            id,
+          ]
         );
         log(sql);
         await sails
@@ -500,14 +502,16 @@ module.exports = {
       } else if (type == 2) {
         let sql = sqlString.format(
           "update ShippingType set name = ?,description = ?,value = ? where id = ?",
-          [name, description,value , id]
+          [name, description, value, id]
         );
         log(sql);
         await sails
           .getDatastore(process.env.MYSQL_DATASTORE)
           .sendNativeQuery(sql);
       } else {
-        let sql = sqlString.format("delete from ShippingType where id = ?", [id]);
+        let sql = sqlString.format("delete from ShippingType where id = ?", [
+          id,
+        ]);
         await sails
           .getDatastore(process.env.MYSQL_DATASTORE)
           .sendNativeQuery(sql);

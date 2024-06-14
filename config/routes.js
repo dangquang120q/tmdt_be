@@ -77,7 +77,8 @@ module.exports.routes = {
   "POST /admin/getStaff": "AdminController.getStaff",
   "POST /admin/getListStaff": "AdminController.getListStaff",
   "POST /staff/statistics": "StaffController.statistics",
-  "POST /staff/productStatistics": "StaffController.productStatistics"
+  "POST /staff/productStatistics": "StaffController.productStatistics",
+  "POST /staff/productLineStatistics": "StaffController.productLineStatistics",
 
   /***************************************************************************
    *                                                                          *
