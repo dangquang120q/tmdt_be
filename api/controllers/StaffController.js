@@ -162,9 +162,7 @@ module.exports = {
     let customer_id = req.body.customer_id;
     try {
       let response_data = {};
-      let sql = sqlString.format("select * from Review where customer_id = ?", [
-        customer_id,
-      ]);
+      let sql = sqlString.format("select * from Review");
       let data = await sails
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sql);
