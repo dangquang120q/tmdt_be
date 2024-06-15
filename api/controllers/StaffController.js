@@ -525,4 +525,74 @@ module.exports = {
       return res.serverError("Something bad happened on the server: " + error);
     }
   },
+  getListFeedback: async (req, res) => {
+    try {
+      let sql = sqlString.format("CALL sp_get_list_feedback()");
+      const data = await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sql);
+      let response = new HttpResponse(data["rows"][0], {
+        statusCode: 200,
+        error: false,
+      });
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
+  changeFeedbackReply: async (req, res) => {
+    let type = req.body.type;
+    let { feedbackId, content, staffId, id } = req.body;
+    try {
+      if (type == 1) {
+        let sql = sqlString.format(
+          "insert into FeedbackReply(feedbackId,content,staffId) values(?,?,?)",
+          [feedbackId, content, staffId]
+        );
+        log(sql);
+        await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+      } else if (type == 2) {
+        let sql = sqlString.format(
+          "update FeedbackReply set feedbackId = ?,content = ?,staffId = ? where id = ?",
+          [feedbackId, content, staffId, id]
+        );
+        log(sql);
+        await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+      } else {
+        let sql = sqlString.format("delete from FeedbackReply where id = ?", [
+          id,
+        ]);
+        await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+      }
+      response = new HttpResponse("Change FeedbackReply Successful", {
+        statusCode: 200,
+        error: false,
+      });
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
+  getFeedbackReply: async (req, res) => {
+    let id = req.body.id;
+    try {
+      let sql = sqlString.format("CALL sp_get_feedback_reply(?)", [id]);
+      const data = await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sql);
+      let response = new HttpResponse(data["rows"][0][0], {
+        statusCode: 200,
+        error: false,
+      });
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
 };
