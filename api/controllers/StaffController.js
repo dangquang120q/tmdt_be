@@ -141,7 +141,7 @@ module.exports = {
         return res.send(response);
       } else {
         let sqlReview = sqlString.format(
-          "insert into Review(customer_id,content,rating) values(?,?,?)",
+          "insert into Review(customer_id,content) values(?,?,?)",
           [customer_id, content, rating]
         );
         await sails
