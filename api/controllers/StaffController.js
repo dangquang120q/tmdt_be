@@ -162,14 +162,17 @@ module.exports = {
     let customer_id = req.body.customer_id;
     try {
       let response_data = {};
-      let sql = sqlString.format("select * from Review");
+      let sql = sqlString.format(`
+      select R.*, C.name, C.avatar from Review as R 
+      join Customer as C on C.id = R.customerId
+    `);
       let data = await sails
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sql);
       response_data = data["rows"];
       for (let index = 0; index < data["rows"].length; index++) {
         let sql = sqlString.format(
-          "select * from ReviewReply where review_id = ?",
+          "select * from ReviewReply where reviewId = ?",
           [response_data[index].id]
         );
         let data = await sails
