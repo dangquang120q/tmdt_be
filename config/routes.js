@@ -82,6 +82,7 @@ module.exports.routes = {
   "POST /staff/getListFeedback": "StaffController.getListFeedback",
   "POST /staff/changeFeedbackReply": "StaffController.changeFeedbackReply",
   "POST /staff/getFeedbackReply": "StaffController.getFeedbackReply",
+  "POST /staff/getListVoucher": "StaffController.getListVoucher",
 
   /***************************************************************************
    *                                                                          *
