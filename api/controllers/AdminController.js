@@ -113,7 +113,7 @@ module.exports = {
       if (type == 1) {
         let sql = sqlString.format(
           "insert into ReviewReply(reviewId,content,adminId) values(?,?,?)",
-          [reviewId, content, adminIdId]
+          [reviewId, content, adminId]
         );
         log(sql);
         await sails
