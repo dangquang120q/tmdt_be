@@ -432,7 +432,7 @@ module.exports = {
     try {
       if (type == 1) {
         let sql = sqlString.format(
-          "insert into Voucher(name,discountPercent,discountAmount,description,condition,startDate,endDate,quantity) values(?,?,?,?,?,?,?,?)",
+          "insert into Voucher(name,discountPercent,discountAmount,description,Voucher.condition,startDate,endDate,quantity) values(?,?,?,?,?,?,?,?)",
           [
             name,
             discountPercent,
@@ -450,7 +450,7 @@ module.exports = {
           .sendNativeQuery(sql);
       } else if (type == 2) {
         let sql = sqlString.format(
-          "update Voucher set name = ?,discountPercent = ?,discountAmount = ?,description = ?,condition = ?,startDate = ?,endDate = ?,quantity = ? where id = ?",
+          "update Voucher set name = ?,discountPercent = ?,discountAmount = ?,description = ?,Voucher.condition = ?,startDate = ?,endDate = ?,quantity = ? where id = ?",
           [
             name,
             discountPercent,
