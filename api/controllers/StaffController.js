@@ -544,6 +544,7 @@ module.exports = {
     let type = req.body.type;
     let { feedbackId, content, staffId, id } = req.body;
     try {
+      log("type", type);
       if (type == 1) {
         let sql = sqlString.format(
           "insert into FeedbackReply(feedbackId,content,staffId) values(?,?,?)",
