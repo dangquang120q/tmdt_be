@@ -595,4 +595,20 @@ module.exports = {
       return res.serverError("Something bad happened on the server: " + error);
     }
   },
+  getListVoucher: async (req, res) => {
+    try {
+      let sql;
+      sql = "select * from Voucher";
+      let data = await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sql);
+      let response = new HttpResponse(data["rows"], {
+        statusCode: 200,
+        error: false,
+      });
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
 };
