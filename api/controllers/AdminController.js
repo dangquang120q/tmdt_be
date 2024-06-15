@@ -105,4 +105,44 @@ module.exports = {
       return res.serverError("Something bad happened on the server: " + error);
     }
   },
+  changeReviewReply: async (req, res) => {
+    let type = req.body.type;
+    let { reviewId, content, adminId, id } = req.body;
+    try {
+      log("type", type);
+      if (type == 1) {
+        let sql = sqlString.format(
+          "insert into ReviewReply(reviewId,content,adminId) values(?,?,?)",
+          [reviewId, content, adminIdId]
+        );
+        log(sql);
+        await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+      } else if (type == 2) {
+        let sql = sqlString.format(
+          "update ReviewReply set reviewId = ?,content = ?,adminId = ? where id = ?",
+          [reviewId, content, adminId, id]
+        );
+        log(sql);
+        await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+      } else {
+        let sql = sqlString.format("delete from ReviewReply where id = ?", [
+          id,
+        ]);
+        await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+      }
+      response = new HttpResponse("Change Review Reply Successful", {
+        statusCode: 200,
+        error: false,
+      });
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
 };
