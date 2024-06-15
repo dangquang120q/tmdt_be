@@ -79,6 +79,7 @@ module.exports.routes = {
   "POST /staff/statistics": "StaffController.statistics",
   "POST /staff/productStatistics": "StaffController.productStatistics",
   "POST /staff/productLineStatistics": "StaffController.productLineStatistics",
+  "POST /staff/getListFeedback": "StaffController.getListFeedback",
 
   /***************************************************************************
    *                                                                          *

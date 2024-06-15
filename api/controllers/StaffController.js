@@ -525,4 +525,19 @@ module.exports = {
       return res.serverError("Something bad happened on the server: " + error);
     }
   },
+  getListFeedback: async (req, res) => {
+    try {
+      let sql = sqlString.format("CALL sp_get_list_feedback()");
+      const data = await sails
+        .getDatastore(process.env.MYSQL_DATASTORE)
+        .sendNativeQuery(sql);
+      let response = new HttpResponse(data["rows"][0], {
+        statusCode: 200,
+        error: false,
+      });
+      return res.ok(response);
+    } catch (error) {
+      return res.serverError("Something bad happened on the server: " + error);
+    }
+  },
 };
