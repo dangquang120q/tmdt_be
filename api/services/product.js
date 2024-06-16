@@ -59,6 +59,11 @@ module.exports = {
       order.tracking = trackingData["rows"];
       order.status = order.tracking[order.tracking.length - 1].status;
       // Get Order Address
+      order.address = {
+        address: order.address || "",
+        name: order.recipient?.split("-")[0] || "",
+        phone: order.recipient?.split("-")[1] || "",
+      };
       // let addressSql = sqlString.format(`SELECT * FROM Address where id = ?`, [
       //   order.addressId,
       // ]);
