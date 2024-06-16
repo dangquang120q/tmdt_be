@@ -59,13 +59,13 @@ module.exports = {
       order.tracking = trackingData["rows"];
       order.status = order.tracking[order.tracking.length - 1].status;
       // Get Order Address
-      let addressSql = sqlString.format(`SELECT * FROM Address where id = ?`, [
-        order.addressId,
-      ]);
-      const addressData = await sails
-        .getDatastore(process.env.MYSQL_DATASTORE)
-        .sendNativeQuery(addressSql);
-      order.address = addressData["rows"][0];
+      // let addressSql = sqlString.format(`SELECT * FROM Address where id = ?`, [
+      //   order.addressId,
+      // ]);
+      // const addressData = await sails
+      //   .getDatastore(process.env.MYSQL_DATASTORE)
+      //   .sendNativeQuery(addressSql);
+      // order.address = addressData["rows"][0];
       return order;
     } catch (error) {
       console.log("Get order detail error", error);
