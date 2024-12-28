@@ -9,7 +9,7 @@ module.exports = {
             endpoint: process.env.ZP_ENDPOINT,
         };
         const embed_data = {
-          // redirecturl: "http://localhost:5173/account/my-posts",
+          redirecturl: `http://172.104.188.248:3008/checkout-success/${transID}`,
         };
         let { price, transID } = item;
       
