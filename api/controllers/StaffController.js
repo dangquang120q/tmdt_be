@@ -313,7 +313,7 @@ module.exports = {
         FROM 
             tmdt.Order
         WHERE 
-            createdAt >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH) and tmdt.Order.status != 'Cancelled'
+            createdAt >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
         GROUP BY 
             DATE_FORMAT(createdAt, '%Y-%m')
         ORDER BY 
@@ -335,7 +335,7 @@ module.exports = {
           FROM 
               tmdt.Order
           WHERE 
-            createdAt BETWEEN ? AND ? and tmdt.Order.status != 'Cancelled'
+            createdAt BETWEEN ? AND ?
           GROUP BY 
               DATE(createdAt)
           ORDER BY 

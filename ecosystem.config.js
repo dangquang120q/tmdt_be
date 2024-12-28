@@ -1,12 +1,12 @@
 module.exports = {
   apps : [{
-    name: 'api-tmdt',
+    name: 'api-sails-gamehub',
     script: './app.js',
     watch: '.',
     exec_mode: 'cluster',
     env: {
       NODE_ENV: 'DEVELOPMENT',
-      PORT: 9400
+      PORT: 4321
     },
     instances: 1,
     autorestart: true

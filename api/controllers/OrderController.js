@@ -11,6 +11,7 @@ const { log } = require("../services/log");
 const { generateUniqueID } = require("../services/create-uuid");
 const { ORDER_STATUS } = require("../services/const");
 const { getOrderDetail } = require("../services/product");
+const createTransaction = require("../services/createTransaction");
 
 module.exports = {
   getShippingType: async (req, res) => {
@@ -52,6 +53,7 @@ module.exports = {
     let addressId = req.body.addressId;
     let products = req.body.products;
     let totalPrice = req.body.totalPrice;
+    let paymentMethod = req.body.paymentMethod;
     let response;
 
     try {
@@ -59,65 +61,94 @@ module.exports = {
       const quantities = products.map((item) => item.qty).join(",");
       const prices = products.map((item) => item.product.price).join(",");
       const cart_ids = products.map((item) => item.id).join(",");
-      const order_id = generateUniqueID();
-      let sql = sqlString.format(
-        "CALL InsertOrderAndProducts(?,?,?,?,?,?,?,?,?)",
-        [
-          order_id,
-          shippingId,
-          addressId,
-          voucherId,
-          totalPrice,
-          product_ids,
-          quantities,
-          prices,
-          cart_ids,
-        ]
-      );
-
-      let data = await sails
-        .getDatastore(process.env.MYSQL_DATASTORE)
-        .sendNativeQuery(sql);
-
-      let ref = data["rows"][0][0]["ref"];
-      if (ref == 1) {
-        response = new HttpResponse(
-          { msg: "Place order successful!", orderId: order_id },
-          {
-            statusCode: 200,
-            error: false,
-          }
+      // const order_id = generateUniqueID();
+      let transID = Math.floor(Math.random() * 1000000);
+      transID = transID.toString().padStart(6, "0");
+      const order_id = `${moment().format("YYMMDD")}_${transID}`;
+      let transaction = {
+        transID: order_id,
+        addressId: addressId,
+        price: totalPrice,
+      };
+      console.log("transaction: ", transaction);
+      let resData = await createTransaction(transaction);
+      if (resData.return_code == 1) {
+        let sql = sqlString.format(
+          "CALL InsertOrderAndProducts(?,?,?,?,?,?,?,?,?,?)",
+          [
+            order_id,
+            shippingId,
+            addressId,
+            voucherId,
+            totalPrice,
+            product_ids,
+            quantities,
+            prices,
+            cart_ids,
+            paymentMethod
+          ]
         );
-        return res.ok(response);
-      } else {
-        let msg = ref == -1 ? "Insufficient Stock" : "Place order failed!";
-        response = new HttpResponse(
-          { msg: msg, orderId: -1 },
-          {
-            statusCode: 403,
-            error: false,
+        let data = await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+          if (data["rows"][0][0]["ref"] == 1) {
+            response = new HttpResponse(
+              { msg: resData.order_url, orderId: order_id },
+              {
+                statusCode: 200,
+                error: false,
+              }
+            );
+            return res.ok(response);
           }
-        );
-        return res.send(response);
       }
+      response = new HttpResponse(
+        { msg: "Place order failed!", orderId: -1 },
+        {
+          statusCode: 403,
+          error: false,
+        }
+      );
+      return res.send(response);
     } catch (error) {
-      let sqlMessage = error.raw.error.sqlMessage;
-      if (sqlMessage.includes("Insufficient Stock")) {
-        response = new HttpResponse(
-          { msg: "Insufficient Stock", orderId: -1 },
-          {
-            statusCode: 403,
-            error: false,
-          }
-        );
-        return res.send(response);
-      } else
-        return res.serverError(
-          "Something bad happened on the server: " + error
-        );
+      return res.serverError("Something bad happened on the server: " + error);
     }
   },
+  zpCallbackTrans: async (req, res) => {
+    let result = {};
 
+    try {
+      let dataStr = req.body.data;
+      let reqMac = req.body.mac;
+
+      let mac = CryptoJS.HmacSHA256(dataStr, process.env.ZP_KEY2).toString();
+      // kiểm tra callback hợp lệ (đến từ ZaloPay server)
+      if (reqMac == mac) {
+        // thanh toán thành công
+        // merchant cập nhật trạng thái cho đơn hàng
+        let dataJson = JSON.parse(dataStr, process.env.ZP_KEY2);
+        console.log(dataJson);
+        let sql = sqlString.format("call sp_update_order_status(?,?)", [
+          dataJson["app_trans_id"], "Processing"
+        ]);
+        let data = await sails
+          .getDatastore(process.env.MYSQL_DATASTORE)
+          .sendNativeQuery(sql);
+        result.return_code = 1;
+        result.return_message = "success";
+      } else {
+        // callback không hợp lệ
+        result.return_code = -1;
+        result.return_message = "mac not equal";
+      }
+    } catch (ex) {
+      result.return_code = 0; // ZaloPay server sẽ callback lại (tối đa 3 lần)
+      result.return_message = ex.message;
+    }
+    console.log(result);
+    // thông báo kết quả cho ZaloPay server
+    res.json(result);
+  },
   getListOrderByCustomer: async (req, res) => {
     const customerId = req.body.customerId;
     const type = req.body.status;
@@ -173,19 +204,18 @@ module.exports = {
       await sails
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sql);
-      let sql2 = sqlString.format(
-        "Select * from ProductOrder where orderId = ?",
-        [orderId]
-      );
+      let sql2 = sqlString.format("Select * from ProductOrder where orderId = ?", [
+        orderId,
+      ]);
       let data2 = await sails
         .getDatastore(process.env.MYSQL_DATASTORE)
         .sendNativeQuery(sql2);
       for (let index = 0; index < data2["rows"].length; index++) {
         const element = data2["rows"][index];
-        let sql3 = sqlString.format(
-          "update Product set quantity = quantity + ? where id = ?",
-          [element["qty"], element["productId"]]
-        );
+        let sql3 = sqlString.format("update Product set quantity = quantity + ? where id = ?", [
+          element["qty"],
+          element["productId"]
+        ]);
         await sails
           .getDatastore(process.env.MYSQL_DATASTORE)
           .sendNativeQuery(sql3);

@@ -85,6 +85,7 @@ module.exports.routes = {
   "POST /staff/changeFeedbackReply": "StaffController.changeFeedbackReply",
   "POST /staff/getFeedbackReply": "StaffController.getFeedbackReply",
   "POST /staff/getListVoucher": "StaffController.getListVoucher",
+  "POST /transaction/callback": "OrderController.zpCallbackTrans"
 
   /***************************************************************************
    *                                                                          *
