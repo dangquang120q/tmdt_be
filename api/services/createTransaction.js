@@ -47,7 +47,7 @@ module.exports = {
           const res = await axios.post(config.endpoint + "/create", null, {
             params: order,
           });
-          console.log("res === " + res.data);
+          console.log("res === " + JSON.stringify(res.data));
           return res.data;
         } catch (error) {
           console.log("create invoice error => ", error);
