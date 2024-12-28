@@ -130,7 +130,7 @@ module.exports = {
         let dataJson = JSON.parse(dataStr, process.env.ZP_KEY2);
         console.log(dataJson);
         let sql = sqlString.format("call sp_update_order_status(?,?)", [
-          dataJson["app_trans_id"], "Processing"
+          "Processing",dataJson["app_trans_id"]
         ]);
         let data = await sails
           .getDatastore(process.env.MYSQL_DATASTORE)
