@@ -4,7 +4,7 @@
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
-
+let CryptoJS = require('crypto-js'); 
 const sqlString = require("sqlstring");
 const { HttpResponse } = require("../services/http-response");
 const { log } = require("../services/log");
