@@ -33,6 +33,7 @@ module.exports.http = {
       "bodyParser",
       "compress",
       "poweredBy",
+      "publicStatic",
       "router",
       "www",
       "favicon",
@@ -45,7 +46,11 @@ module.exports.http = {
      * https://sailsjs.com/config/http#?customizing-the-body-parser             *
      *                                                                          *
      ***************************************************************************/
-
+    publicStatic: (function () {
+      const express = require('express');
+      const path = require('path');
+      return express.static(path.join(__dirname, '../public'));
+    })()
     // bodyParser: (function _configureBodyParser(){
     //   var skipper = require('skipper');
     //   var middlewareFn = skipper({ strict: true });
