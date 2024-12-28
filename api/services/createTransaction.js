@@ -25,6 +25,7 @@ module.exports = {
           description: `Thanh toán cho giao dịch #${transID}`,
           callback_url: process.env.API_URL + "/transaction/callback",
         };
+        console.log("order===" + order)
         // appid|app_trans_id|appuser|amount|apptime|embeddata|item
         const data =
           config.app_id +
@@ -45,7 +46,7 @@ module.exports = {
           const res = await axios.post(config.endpoint + "/create", null, {
             params: order,
           });
-      
+          console.log("res === " + res.data);
           return res.data;
         } catch (error) {
           console.log("create invoice error => ", error);
