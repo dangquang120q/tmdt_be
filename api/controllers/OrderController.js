@@ -72,36 +72,68 @@ module.exports = {
         price: totalPrice,
       };
       console.log("transaction: ", transaction);
-      let resData = await createTransaction(transaction);
-      if (resData.return_code == 1) {
+      if (paymentMethod == "Cash on Zalo Pay") {
+        let resData = await createTransaction(transaction);
+        if (resData.return_code == 1) {
+          let sql = sqlString.format(
+            "CALL InsertOrderAndProducts(?,?,?,?,?,?,?,?,?,?)",
+            [
+              order_id,
+              shippingId,
+              addressId,
+              voucherId,
+              totalPrice,
+              product_ids,
+              quantities,
+              prices,
+              cart_ids,
+              paymentMethod
+            ]
+          );
+          let data = await sails
+            .getDatastore(process.env.MYSQL_DATASTORE)
+            .sendNativeQuery(sql);
+            if (data["rows"][0][0]["ref"] == 1) {
+              response = new HttpResponse(
+                { msg: resData.order_url, orderId: order_id },
+                {
+                  statusCode: 200,
+                  error: false,
+                }
+              );
+              return res.ok(response);
+            }
+        }
+      }
+      else{
         let sql = sqlString.format(
-          "CALL InsertOrderAndProducts(?,?,?,?,?,?,?,?,?,?)",
-          [
-            order_id,
-            shippingId,
-            addressId,
-            voucherId,
-            totalPrice,
-            product_ids,
-            quantities,
-            prices,
-            cart_ids,
-            paymentMethod
-          ]
-        );
-        let data = await sails
-          .getDatastore(process.env.MYSQL_DATASTORE)
-          .sendNativeQuery(sql);
-          if (data["rows"][0][0]["ref"] == 1) {
-            response = new HttpResponse(
-              { msg: resData.order_url, orderId: order_id },
-              {
-                statusCode: 200,
-                error: false,
-              }
-            );
-            return res.ok(response);
-          }
+            "CALL InsertOrderAndProducts(?,?,?,?,?,?,?,?,?,?)",
+            [
+              order_id,
+              shippingId,
+              addressId,
+              voucherId,
+              totalPrice,
+              product_ids,
+              quantities,
+              prices,
+              cart_ids,
+              paymentMethod
+            ]
+          );
+          let data = await sails
+            .getDatastore(process.env.MYSQL_DATASTORE)
+            .sendNativeQuery(sql);
+            if (data["rows"][0][0]["ref"] == 1) {
+              response = new HttpResponse(
+                { msg: "Place order successful!", orderId: order_id },
+                {
+                  statusCode: 200,
+                  error: false,
+                }
+              );
+              return res.ok(response);
+            }
       }
       response = new HttpResponse(
         { msg: "Place order failed!", orderId: -1 },
