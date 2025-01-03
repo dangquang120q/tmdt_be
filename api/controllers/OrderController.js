@@ -127,6 +127,7 @@ module.exports = {
             .sendNativeQuery(sql);
           console.log(JSON.stringify(data["rows"][0][0]));
           if (data["rows"][0][0]["ref"] == 1) {
+            console.log("Place order successful!");
             response = new HttpResponse(
               { msg: "Place order successful!", orderId: order_id },
               {
@@ -134,6 +135,7 @@ module.exports = {
                 error: false,
               }
             );
+            console.log(response);
             return res.ok(response);
           }
       }
