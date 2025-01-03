@@ -135,8 +135,8 @@ module.exports = {
                 error: false,
               }
             );
-            console.log(response);
-            return res.ok(response);
+            console.log(res);
+            return res.send(response);
           }
       }
       response = new HttpResponse(
