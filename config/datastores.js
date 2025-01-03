@@ -57,7 +57,7 @@ module.exports.datastores = {
   //   url: 'mysql://ibg:123654789@aA@45.118.133.66:3306/gamehub_dev',
   // },
 
-  gamehubMysql: {
+  doantotnghiepMysql: {
     adapter: require("sails-mysql"),
     // url: "mysql://ibg:123654789@aA@45.118.133.66:3306/gamehub_dev",
     url: `mysql://${process.env.MYSQL_USER}:${process.env.MYSQL_PASS}@${process.env.MYSQL_HOST}:${process.env.MYSQL_PORT}/${process.env.MYSQL_DB}`,

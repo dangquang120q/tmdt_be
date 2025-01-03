@@ -311,7 +311,7 @@ module.exports = {
         DATE_FORMAT(createdAt, '%Y-%m') AS month,
             SUM(totalPrice) AS Revenue
         FROM 
-            tmdt.Order
+            Order
         WHERE 
             createdAt >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
         GROUP BY 
@@ -333,7 +333,7 @@ module.exports = {
               DATE(createdAt) AS date,
               SUM(totalPrice) AS total_price
           FROM 
-              tmdt.Order
+              Order
           WHERE 
             createdAt BETWEEN ? AND ?
           GROUP BY 
