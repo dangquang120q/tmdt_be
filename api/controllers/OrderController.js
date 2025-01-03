@@ -95,7 +95,7 @@ module.exports = {
             .sendNativeQuery(sql);
             if (data["rows"][0][0]["ref"] == 1) {
               response = new HttpResponse(
-                { msg: resData.order_url, orderId: order_id },
+                { msg: resData.order_url, order_id: order_id },
                 {
                   statusCode: 200,
                   error: false,
@@ -127,16 +127,15 @@ module.exports = {
             .sendNativeQuery(sql);
           console.log(JSON.stringify(data["rows"][0][0]));
           if (data["rows"][0][0]["ref"] == 1) {
-            console.log("Place order successful!");
             response = new HttpResponse(
-              { msg: "Place order successful!", orderId: order_id },
+              { msg: "Đặt hàng thành công!", order_id: order_id },
               {
                 statusCode: 200,
                 error: false,
               }
             );
-            console.log(res);
-            return res.send(response);
+            console.log(response);
+            return res.ok(response);
           }
       }
       response = new HttpResponse(
