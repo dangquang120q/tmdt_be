@@ -8,10 +8,10 @@ module.exports = {
             key2: process.env.ZP_KEY2,
             endpoint: process.env.ZP_ENDPOINT,
         };
+        let { price, transID } = item;
         const embed_data = {
           redirecturl: `http://172.104.188.248:3008/checkout-success/${transID}`,
         };
-        let { price, transID } = item;
       
         const items = [{ ...item }];
       
