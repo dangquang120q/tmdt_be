@@ -125,7 +125,7 @@ module.exports = {
           let data = await sails
             .getDatastore(process.env.MYSQL_DATASTORE)
             .sendNativeQuery(sql);
-          console.log(JSON.stringify(data[0][0]));
+          console.log(JSON.stringify(data["rows"][0][0]));
           if (data["rows"][0][0]["ref"] == 1) {
             response = new HttpResponse(
               { msg: "Place order successful!", orderId: order_id },
