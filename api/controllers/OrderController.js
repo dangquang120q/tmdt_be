@@ -106,6 +106,7 @@ module.exports = {
         }
       }
       else{
+        console.log("Cash on Delivery");
         let sql = sqlString.format(
             "CALL InsertOrderAndProducts(?,?,?,?,?,?,?,?,?,?)",
             [
@@ -124,16 +125,17 @@ module.exports = {
           let data = await sails
             .getDatastore(process.env.MYSQL_DATASTORE)
             .sendNativeQuery(sql);
-            if (data["rows"][0][0]["ref"] == 1) {
-              response = new HttpResponse(
-                { msg: "Place order successful!", orderId: order_id },
-                {
-                  statusCode: 200,
-                  error: false,
-                }
-              );
-              return res.ok(response);
-            }
+          console.log(JSON.stringify(data[0][0]));
+          if (data["rows"][0][0]["ref"] == 1) {
+            response = new HttpResponse(
+              { msg: "Place order successful!", orderId: order_id },
+              {
+                statusCode: 200,
+                error: false,
+              }
+            );
+            return res.ok(response);
+          }
       }
       response = new HttpResponse(
         { msg: "Place order failed!", orderId: -1 },
